@@ -21,8 +21,15 @@ diff = TARGET - sum(quota.values())
 for c in sorted(quota, key=lambda c: -len(by[c]))[:abs(diff)]: quota[c] += 1 if diff > 0 else -1
 for c, v in by.items():
     v.sort(key=lambda e: -e["f"]); keep += v[:quota[c]]
-keep.sort(key=lambda e: (-e["f"], e["w"]))
 assert len(keep) == TARGET
+# 팀별 추가 묶음(T*.json)은 2,000개와 별도로 덧붙인다.
+have = {norm(e["w"]) for e in keep}
+for p in sorted(src.glob("T*.json")):
+    for e in json.loads(p.read_text(encoding="utf-8")):
+        if norm(e["w"]) in have: continue
+        have.add(norm(e["w"])); keep.append({k2: e[k2] for k2 in KEYS})
+keep.sort(key=lambda e: (-e["f"], e["w"]))
+print("최종", len(keep))
 Path("data/vocab.json").write_text(json.dumps(keep, ensure_ascii=False, indent=0), encoding="utf-8")
 print({c: quota[c] for c in quota})
 print("tone", collections.Counter(e["tone"] for e in keep))
