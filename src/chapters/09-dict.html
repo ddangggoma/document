@@ -1,0 +1,35 @@
+<section class="sheet" id="dict">
+<div class="folio"><span>보고서 작성 바이블</span><span>9장 어휘 사전</span></div>
+<header class="open">
+  <div class="num">9</div>
+  <div>
+    <h2>보고서 낱말 {{VOCAB_COUNT}}</h2>
+    <p class="stand">경영 보고서에 자주 나오는 낱말과 구를 열한 갈래로 나눠 실었다. 낱말마다 뜻의 결, 비슷한 말, 예문, 주의할 점을 적었다. 많이 쓰는 말부터 차례로 나온다.</p>
+  </div>
+  <div class="gist">
+    <h3>찾는 법</h3>
+    <ol>
+      <li>낱말의 일부만 넣어도 찾는다. ‘증’을 넣으면 증가, 급증처럼 그 글자가 든 말이 나온다.</li>
+      <li>비슷한 말로도 찾는다. ‘늘다’를 넣으면 늘다, 증가, 신장이 나온다.</li>
+      <li>초성만 넣어도 찾는다. ‘ㅊㅈ’을 넣으면 추진, 차질, 추정하다가 나온다.</li>
+      <li>낱말 아래 비슷한 말을 누르면 그 말로 다시 찾는다.</li>
+    </ol>
+  </div>
+</header>
+
+<div class="dict-tools">
+  <label class="dict-search" for="dict-q">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+    <input id="dict-q" type="search" placeholder="낱말, 비슷한 말, 초성으로 찾기" autocomplete="off" aria-label="어휘 검색">
+    <button type="button" id="dict-clear">지우기</button>
+  </label>
+  <div class="chips scroll" id="dict-cats" role="group" aria-label="분류"></div>
+  <div class="dict-meta"><div class="chips" id="dict-tones" role="group" aria-label="어감"></div><span id="dict-count"></span></div>
+</div>
+<div class="dict-list" id="dict-list"></div>
+<button type="button" class="dict-more" id="dict-more">더 보기</button>
+
+<div class="prose" style="margin-top: var(--s-5)">
+<div class="box"><h4>순서와 빈도 표시를 읽는 법</h4><p>낱말 왼쪽의 숫자는 전체 순위이고, 오른쪽 막대 다섯 칸은 쓰이는 정도다. 이 빈도는 말뭉치를 세어 얻은 통계가 아니고, 대기업 경영 보고서에서 그 말이 얼마나 자주 보이는지를 1~100점으로 어림한 값이다. 순서는 대강의 길잡이로 삼는다. ‘순화·교정 대상 표현’ 갈래의 예문은 고쳐 쓴 문장이고, 고치기 전 문장은 ‘주의’에 적었다.</p></div>
+</div>
+</section>
