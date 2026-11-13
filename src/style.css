@@ -189,15 +189,15 @@ sup.ref a { text-decoration: none; font-weight: 700; padding: 0 0.1em; }
 
 /* 짝 목록: 짧은 예를 많이 보여 줄 때 */
 .pairs { margin: var(--s-3) 0 0; border-top: 2px solid var(--ink); display: grid; }
-.pairs > div { display: grid; grid-template-columns: 1fr 1fr; gap: 0 var(--s-3); padding: 0.75rem 0; border-bottom: 1px solid var(--line); font-size: 1rem; line-height: 1.7; }
+.pairs { container-type: inline-size; }
+.pairs > div { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 var(--s-3); padding: 0.75rem 0; border-bottom: 1px solid var(--line); font-size: 1rem; line-height: 1.7; }
 .pairs .b { color: var(--ink-2); margin: 0; }
 .pairs .b::before { content: "✕ "; color: var(--red); font-weight: 700; }
-.pairs .g { margin: 0; }
-.pairs .g::before { content: "○ "; color: var(--blue); font-weight: 700; }
+.pairs p.g { margin: 0; }
 .pairs .y { grid-column: 1 / -1; margin: 0.3rem 0 0; font-size: var(--t-sm); color: var(--ink-3); }
 .pairs .h { font-weight: 700; font-size: var(--t-sm); }
 .pairs .h::before { content: none !important; }
-@media (max-width: 34rem) { .pairs > div { grid-template-columns: 1fr; } }
+@container (max-width: 30rem) { .pairs > div { grid-template-columns: minmax(0, 1fr); gap: 0.35rem 0; } }
 
 /* 표 */
 .tbl { overflow-x: auto; margin-top: var(--s-3); }
@@ -328,3 +328,86 @@ sup.ref a { text-decoration: none; font-weight: 700; padding: 0 0.1em; }
 .prose.wide-refs { max-width: none; margin-top: var(--s-4); }
 .note cite::before { content: "출처 "; }
 .note cite a { font-weight: 700; text-decoration: none; }
+
+/* ── 개조식 서술형 견본: 항목으로 나누되 서술어로 끝맺는다 ── */
+.gj, .gj ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.3rem; }
+.prose .gj, .prose .gj ul { padding-left: 0; }
+.gj > li { position: relative; padding-left: 1.05em; }
+.gj > li::before { content: "•"; position: absolute; left: 0; color: var(--blue); font-weight: 700; }
+.gj ul { margin-top: 0.3rem; }
+.gj ul > li { position: relative; padding-left: 1.05em; }
+.gj ul > li::before { content: "–"; position: absolute; left: 0; color: var(--blue); }
+.fix .g b + .gj { margin-top: 0.5rem; }
+.doc ul { list-style: none; padding-left: 0; }
+.doc li { position: relative; padding-left: 1em; }
+.doc li::before { content: "•"; position: absolute; left: 0; color: var(--blue); }
+.ent-ex { position: relative; padding-left: 1.1rem; border-left: 0; }
+.ent-ex::before { content: "•"; position: absolute; left: 0.1rem; font-weight: 700; }
+
+/* ── 어휘 사전: 왼쪽에서 분류를 따라 내려가고 오른쪽에서 낱말을 본다 ── */
+vocab-browser { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-3); }
+.vb-main { min-width: 0; }
+.vb-side > summary { cursor: pointer; font-weight: 700; padding: 0.7rem 0.9rem; border: 2px solid var(--ink); list-style: none; display: flex; justify-content: space-between; align-items: center; }
+.vb-side > summary::-webkit-details-marker { display: none; }
+.vb-side > summary::after { content: "펼치기"; font-weight: 400; font-size: var(--t-sm); color: var(--ink-2); }
+.vb-side[open] > summary::after { content: "접기"; }
+.vb-tree { padding: var(--s-2) 0 0; display: grid; gap: var(--s-2); }
+.vb-tree ul { list-style: none; margin: 0; padding: 0; }
+.vb-group h4 { margin: 0 0 0.3rem; font-size: var(--t-xs); font-weight: 700; color: var(--ink-2); padding-bottom: 0.3rem; border-bottom: 1px solid var(--ink); }
+.vb-node, .vb-leaf { font: inherit; width: 100%; text-align: left; background: none; border: 0; color: var(--ink); cursor: pointer; display: flex; justify-content: space-between; align-items: baseline; gap: 0.6rem; line-height: 1.4; }
+.vb-node { padding: 0.5rem 0.5rem; font-size: 0.95rem; font-weight: 700; border-bottom: 1px solid var(--line); }
+.vb-node small { display: block; font-weight: 400; font-size: var(--t-xs); color: var(--ink-2); margin-top: 0.1rem; }
+.vb-node i, .vb-leaf i { flex: none; white-space: nowrap; font-style: normal; font-weight: 400; font-size: var(--t-xs); color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.vb-root { border: 1px solid var(--line); }
+.vb-node:hover, .vb-leaf:hover { background: var(--tint); }
+.vb-node[aria-current="true"], .vb-leaf[aria-current="true"] { background: var(--ink); color: var(--sheet); }
+.vb-node[aria-current="true"] small, .vb-node[aria-current="true"] i, .vb-leaf[aria-current="true"] i { color: var(--sheet); opacity: 0.75; }
+.vb-node[aria-expanded="true"] { border-bottom-color: var(--ink); }
+.vb-subs { border-left: 2px solid var(--blue); margin: 0.25rem 0 0.5rem 0.5rem !important; }
+.vb-leaf { padding: 0.32rem 0.6rem; font-size: var(--t-sm); justify-content: flex-start; }
+.vb-leaf i { margin-left: auto; }
+.vb-tools { position: sticky; top: calc(3.25rem + env(safe-area-inset-top, 0px)); z-index: 5; background: var(--sheet); padding: var(--s-1) 0 0.6rem; border-bottom: 2px solid var(--ink); display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.55rem; }
+.vb-crumb { display: flex; flex-wrap: wrap; align-items: center; gap: 0.15rem 0.4rem; font-size: var(--t-sm); color: var(--ink-2); }
+.vb-crumb > * + *::before { content: "›"; margin-right: 0.4rem; color: var(--ink-3); font-weight: 400; }
+.vb-crumb button, .vb-count button, .ent-c button { font: inherit; background: none; border: 0; padding: 0; color: var(--blue); cursor: pointer; text-decoration: underline; text-underline-offset: 0.2em; }
+.vb-crumb b { color: var(--ink); }
+.vb-filters { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.4rem var(--s-2); }
+.vb-count { margin: 0; font-size: var(--t-sm); color: var(--ink-2); }
+.vb-count b { color: var(--ink); font-variant-numeric: tabular-nums; }
+.ent-c button { color: inherit; text-decoration: none; }
+.ent-c button:hover { color: var(--blue); text-decoration: underline; }
+.vb-sentinel { height: 1px; }
+@media (min-width: 62rem) {
+  vocab-browser { grid-template-columns: 17rem minmax(0, 1fr); gap: var(--s-4); align-items: start; }
+  .vb-side { position: sticky; top: calc(3.25rem + env(safe-area-inset-top, 0px) + 0.75rem); max-height: calc(100vh - 5rem); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; padding-right: 0.4rem; }
+  .vb-side > summary { display: none; }
+  .vb-tree { padding-top: 0; }
+}
+
+/* ── 출처 미리 보기 (Popover API) ── */
+#ref-pop { position: fixed; inset: auto; margin: 0; width: min(24rem, calc(100vw - 24px)); padding: 1rem 1.1rem; border: 2px solid var(--ink); background: var(--sheet); color: var(--ink); font-size: 0.92rem; line-height: 1.6; box-shadow: 6px 6px 0 var(--line); }
+#ref-pop b { display: block; }
+#ref-pop span { display: block; color: var(--ink-2); font-size: var(--t-sm); }
+.ref-pop-n { font-size: var(--t-xs); font-weight: 700; color: var(--blue); margin-bottom: 0.3rem; }
+.ref-pop-go { display: block; width: fit-content; margin-top: 0.6rem; font-size: var(--t-sm); }
+
+/* ── 성능과 새 CSS 기능 ── */
+/* 화면 밖 장과 낱말은 그리기를 미룬다. */
+.sheet:not(#top) { content-visibility: auto; contain-intrinsic-size: auto 2400px; }
+.ent { content-visibility: auto; contain-intrinsic-size: auto 15rem; }
+.prose p, .gj li, .ent-m { text-wrap: pretty; }
+/* 읽은 만큼 차오르는 줄 (scroll-driven animation). 지원하지 않는 브라우저에서는 보이지 않는다. */
+.bar::after { content: ""; position: absolute; left: 0; bottom: -1px; height: 2px; width: 100%; background: var(--blue); transform-origin: 0 50%; transform: scaleX(0); }
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .bar::after { animation: bar-grow linear both; animation-timeline: scroll(root); }
+  }
+}
+@keyframes bar-grow { to { transform: scaleX(1); } }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: 0.18s; }
+
+@media print {
+  .sheet, .ent { content-visibility: visible; }
+  .vb-side, .vb-tools, .vb-sentinel, #ref-pop, .bar::after { display: none !important; }
+  vocab-browser { display: block; }
+}

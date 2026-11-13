@@ -42,7 +42,8 @@ assert "{{" not in body and "[[" not in body
 
 page = read(SRC / "head.html")
 page += "<style>\n" + read(SRC / "style.css") + "</style>\n" + body
-page += "\n<script>window.VOCAB=" + json.dumps(vocab, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/") + ";</script>\n"
+# 어휘는 JSON 으로 싣는다. 스크립트로 싣는 것보다 빨리 읽히고, 화면을 그린 뒤에 읽는다.
+page += '\n<script type="application/json" id="vocab-data">' + json.dumps(vocab, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/") + "</script>\n"
 page += "<script>\n" + read(SRC / "app.js") + "</script>\n"
 
 full = ('<!doctype html>\n<html lang="ko">\n<head>\n<meta charset="utf-8">\n'
