@@ -501,3 +501,8 @@ ul.w ul li::before { content: "-"; position: absolute; left: 0.1em; }
 .w-fn li::before { content: counter(fn) ") "; }
 .w-pg { margin: 2mm 0 0; text-align: center; font-size: 8.5pt; color: var(--ink-3); }
 @media print { .a4 { border: 0; box-shadow: none; width: auto; height: auto; padding: 0; break-after: page; } .a4-wrap { display: block; } }
+
+/* 보고서 안의 일반 표: 첫 칸만 굵게, 나머지는 왼쪽 맞춤 */
+.w-tbl2 { table-layout: fixed; }
+.w-tbl2 td, .w-tbl2 td:first-child, .w-tbl2 td:last-child, .w-tbl2 td:nth-child(2) { text-align: left; white-space: normal; font-weight: 400; }
+.w-tbl2 td:first-child { font-weight: 700; }
