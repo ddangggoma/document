@@ -454,6 +454,66 @@ vocab-browser { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(-
 .issue p { margin: 0.35rem 0; color: var(--ink-2); line-height: 1.75; }
 .issue p b { color: var(--ink); }
 .open .num { word-break: keep-all; }
+
+/* ── A4 문서 지면: 워드로 쓴 발간물처럼 보이게 한다 ── */
+.a4-wrap { display: grid; gap: var(--s-3); justify-items: center; margin: var(--s-3) 0 var(--s-4); }
+.a4 { width: min(210mm, 100%); background: var(--sheet); border: 1px solid var(--ink-3); box-shadow: 6px 6px 0 var(--line); padding: 15mm 19mm 11mm; font-size: 10.5pt; line-height: 1.62; display: flex; flex-direction: column; font-family: "Malgun Gothic", var(--f-body); }
+@media (min-width: 232mm) { .a4 { height: 297mm; } }
+@media (max-width: 40rem) { .a4 { padding: 1.4rem 1.1rem 1rem; font-size: 0.92rem; } }
+.a4-in { flex: 1 1 auto; min-height: 0; }
+.a4-foot { margin-top: auto; padding-top: 3mm; }
+.w-run { display: flex; justify-content: space-between; gap: 1rem; font-size: 8pt; color: var(--ink-3); border-bottom: 2.5px solid var(--blue); padding-bottom: 1.2mm; margin-bottom: 5mm; }
+.w-run span:first-child { color: var(--blue); font-weight: 700; white-space: nowrap; }
+.w-run span:last-child { text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.w-title h3 { margin: 0; font-family: inherit; font-weight: 700; font-size: 18pt; line-height: 1.3; letter-spacing: -0.02em; text-wrap: balance; }
+.w-sub { margin: 1.5mm 0 0; font-size: 11.5pt; color: var(--ink-2); }
+.w-meta { margin: 1.5mm 0 4mm; font-size: 8.5pt; color: var(--ink-3); }
+.w-sum { border: 1px solid var(--ink); background: var(--tint); padding: 3mm 4mm; margin-bottom: 1mm; }
+.w-sum > b { color: var(--blue); font-size: 10pt; }
+.w-sum ul { list-style: none; margin: 1mm 0 0; padding: 0; display: grid; gap: 0.6mm; font-size: 9.5pt; }
+.w-sum li { padding-left: 1.3em; text-indent: -1.3em; }
+.w-sum li::before { content: "□ "; }
+.w-sum em { font-style: normal; font-weight: 700; margin-right: 0.4em; }
+.w-sum em::before { content: "("; }
+.w-sum em::after { content: ")"; }
+.w-h { margin: 5mm 0 1.5mm; font-size: 13pt; font-weight: 700; color: var(--blue); border-bottom: 1.5px solid var(--blue); padding-bottom: 1mm; line-height: 1.35; }
+.w-head { margin: 4.2mm 0 1.6mm; font-weight: 700; font-size: 11pt; }
+.w-head::before { content: "▣ "; color: var(--blue); }
+ul.w { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.1mm; }
+ul.w > li { padding-left: 1.35em; position: relative; }
+ul.w > li::before { content: "□"; position: absolute; left: 0; }
+ul.w ul { list-style: none; margin: 0.3mm 0 0; padding: 0; color: var(--ink-2); }
+ul.w ul li { padding-left: 1em; position: relative; }
+ul.w ul li::before { content: "-"; position: absolute; left: 0.1em; }
+.a4 sup { font-size: 0.7em; color: var(--blue); line-height: 0; }
+.w-fig { margin: 2.5mm 0 2.5mm; }
+.w-fig figcaption, .w-tbl caption { font-size: 8.5pt; font-weight: 700; color: var(--ink-2); text-align: left; padding-bottom: 1.2mm; caption-side: top; }
+.steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.5mm; align-items: stretch; font-size: 9pt; line-height: 1.45; }
+.st { border: 1px solid var(--line); border-top: 3px solid var(--ink-3); padding: 2mm; background: var(--sheet); }
+.st1 { margin-top: 12mm; }
+.st2 { margin-top: 8mm; }
+.st3 { margin-top: 4mm; }
+.st > b { display: block; font-size: 8pt; color: var(--ink-3); font-weight: 500; }
+.st > strong { display: block; font-size: 10pt; }
+.st p { margin: 1mm 0; color: var(--ink-2); }
+.st dl { margin: 0; }
+.st dt { font-weight: 700; margin-top: 1mm; font-size: 8pt; }
+.st dd { margin: 0; }
+.st.me { border-color: var(--blue); border-top-color: var(--blue); background: var(--blue-wash); }
+.st.me > strong { color: var(--blue); }
+@media (max-width: 34rem) { .steps { grid-template-columns: 1fr 1fr; } .st1, .st2, .st3 { margin-top: 0; } }
+.w-tbl { border-collapse: collapse; width: 100%; font-size: 9.5pt; line-height: 1.4; margin: 2mm 0 1mm; }
+.w-tbl th { background: var(--blue-wash); font-weight: 700; border: 1px solid var(--ink-3); padding: 1mm 1.5mm; }
+.w-tbl td { border: 1px solid var(--ink-3); padding: 1.5mm 1.8mm; vertical-align: top; }
+.w-tbl td:first-child, .w-tbl td:last-child { text-align: center; white-space: nowrap; }
+.w-tbl td:nth-child(2) { font-weight: 700; white-space: nowrap; }
+.w-note { margin: 4mm 0 0; padding-top: 1.5mm; border-top: 1px solid var(--ink-3); font-size: 8.5pt; color: var(--ink-2); }
+.w-note::before { content: "※ "; }
+.w-fn { list-style: none; margin: 0; padding: 1.2mm 0 0; border-top: 1px solid var(--ink-3); font-size: 8pt; color: var(--ink-2); counter-reset: fn; width: 100%; }
+.w-fn li { counter-increment: fn; }
+.w-fn li::before { content: counter(fn) ") "; }
+.w-pg { margin: 2mm 0 0; text-align: center; font-size: 8.5pt; color: var(--ink-3); }
+@media print { .a4 { border: 0; box-shadow: none; width: auto; height: auto; padding: 0; break-after: page; } .a4-wrap { display: block; } }
 </style>
 <!-- title: AI 에이전트 R&D 동향 보고 -->
 <header class="bar"><div class="bar-in"><a class="bar-name" href="#top">별첨: AI 에이전트 R&D 자동화 동향</a><nav class="bar-nav" aria-label="이동"><a href="#report">보고서 개선판</a><a href="#review">검토 의견</a><a href="#changes">달라진 것</a><a href="#lessons">잘 쓰는 법</a><a href="https://claude.ai/artifact/S3dfiNpBzXGG4S6LvG7Qbh">부록: 쓰는 법</a><a href="https://claude.ai/artifact/PVJVg2qa88TsEsfjBFXbbL">보고서 작성 바이블</a></nav></div></header>
@@ -471,7 +531,7 @@ vocab-browser { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(-
     <h3>한눈에</h3>
     <ol>
       <li>초안 평가는 40점 만점에 26점. 출처 표기와 균형은 강점, 분석 틀과 의사결정 연결은 약점.</li>
-      <li>개선판은 4단계 모형, 연구 활동 단계별 성숙도, 시나리오 세 가지를 더해 당사 위치와 순서를 보이게 함.</li>
+      <li>개선판은 A4 4쪽. 4단계 모형을 그림 하나로, 정비 순서를 표 하나로 싣고 나머지는 개조식으로 정리.</li>
       <li>본문 수치 40건 가운데 원문을 직접 확인한 것은 1건. 보고 전 대조 필수.</li>
       <li>대괄호 자리는 당사 실제 수치와 담당 부서로 교체.</li>
     </ol>
@@ -487,206 +547,20 @@ vocab-browser { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(-
 </section>
 
 <section class="sheet" id="report">
-<div class="folio"><span>별첨</span><span>보고서 개선판</span></div>
-<article class="report" aria-label="보고서 개선판">
-<header class="report-h">
-  <p class="report-kind">참고 보고 · 결정 요청 부재 · 대조 전 초안(수치 40건 중 1건 원문 대조 완료)</p>
-  <h3>AI 에이전트, 코드·설계부터 ‘업무 흐름 위임’ 이행 시작. 새 병목은 검증</h3>
-  <p class="report-meta">기술전략팀 · 2026. 11. [보고일] · 경영회의</p>
-</header>
-
-<section class="report-sum">
-<h4>요약</h4>
-<div class="report-grid">
-<div>
-<h5>요지</h5>
-<ul class="gj">
-<li>에이전트가 절반 확률로 완수하는 과제 길이, 2025년 초 1시간대 → 2026년 초 약 12시간(독립 평가, 소프트웨어 과제 한정)</li>
-<li>적용 분야, 코드에서 설계·실험으로 확산. 다만 기업 전반은 실험 단계, 확대 적용은 어느 기능에서도 10% 이하(2025년 11월, 설문)</li>
-<li>실행은 가속, 사람의 검증은 정체. 에이전트의 종합·해석 정확도 57.9%(2025년 11월, 개발사 측 평가)</li>
-</ul>
-<h5>핵심 판단</h5>
-<ul class="gj">
-<li>당사는 4단계 중 2단계(과제 자동화), 완료 [ ]건·진행 [ ]건</li>
-<li>선도 AI 연구소도 코드 영역에서 3단계 초입, 국내 주요 기업의 3단계는 선언·계획 단계(회사 발표)</li>
-<li>쟁점은 격차보다 이행 순서라는 판단</li>
-</ul>
-<h5>유의할 점</h5>
-<ul class="gj">
-<li>독립 검증된 R&D 생산성 수치는 미확인, 공개 수치는 대부분 회사·공급사 발표</li>
-<li>80% 성공 기준 과제 길이는 약 1.5시간(2026년 초, 독립 평가)</li>
-</ul>
-</div>
-<div>
-<h5>당사에 주는 뜻</h5>
-<ul class="gj">
-<li>과제 연결 전 정비 순서: 권한 설계 → 기준선 측정 → 검증 체계 → 비용 한도</li>
-<li>종합·해석과 연구 방향 판단은 사람 전담 유지</li>
-<li>권한 설계, 기준선 측정, 기여 기록은 어느 전망이 맞든 유효한 준비</li>
-</ul>
-<h5>지켜볼 신호</h5>
-<ul class="gj">
-<li>외부: 독립 검증 수치 공개, 자율 실험실 가동 성과, 주요 기업의 사용 한도 확산</li>
-<li>내부: 자동화 과제의 사람 검토 시간 비중, 과제당 AI 사용 비용</li>
-</ul>
-<h5>다음 결정</h5>
-<ul class="gj">
-<li>이번 보고의 결정 요청 사항은 부재</li>
-<li>2027년 1분기 재보고 시 시범 과제 범위와 비용 한도안의 상정 여부 판단 예정</li>
-<li>그 전까지 [담당 부서]가 권한 설계 현황과 당사 기준선 측정 결과 준비</li>
-</ul>
-</div>
-</div>
-</section>
-
+<div class="folio"><span>별첨</span><span>보고서 개선판 (A4 4쪽)</span></div>
+<div class="prose"><h3>보고서 개선판: A4 4쪽</h3><p>싱크탱크 발간물의 짜임을 따랐다. 첫 쪽 머리에 요약 상자를 두고, 번호 붙은 절 아래 굵은 헤드 메시지와 □, - 두 단계의 개조식으로 썼다. 그림은 하나, 표도 하나다. 출처는 쪽 아래 주석으로 내렸고, 수치 대조표와 예상 질문은 별지로 뺐다. 같은 내용의 Word 파일은 저장소의 <code>docs/AI에이전트_RnD자동화_동향보고.docx</code>다.</p></div>
+<div class="a4-wrap" aria-label="동향 보고서 A4 4쪽판"><div class="a4"><div class="a4-in"><div class="w-run"><span>기술전략 이슈 보고</span><span>AI 에이전트, 코드·설계부터 ‘업무 흐름 위임’ 이행 시작</span></div><div class="w-title"><h3>AI 에이전트, 코드·설계부터 ‘업무 흐름 위임’ 이행 시작</h3><p class="w-sub">과제별 자동화 이후의 변화와 당사가 먼저 갖출 것</p><p class="w-meta">참고 보고(결정 요청 부재) · 기술전략팀 · 2026. 11. [보고일]</p></div><div class="w-sum"><b>요약</b><ul><li><em>변화</em>에이전트가 맡는 과제 길이, 1년 새 1시간대 → 약 12시간(독립 평가). 적용 분야는 코드에서 설계·실험으로 확산</li><li><em>한계</em>실행은 가속, 검증은 정체. 공개된 효과 수치는 대부분 회사 발표, 독립 검증된 R&amp;D 생산성 수치는 미확인</li><li><em>위치</em>당사는 4단계 중 2단계(과제 자동화). 선도 AI 연구소도 3단계 초입, 국내 주요 기업은 선언·계획 단계</li><li><em>시사점</em>자동화된 과제를 잇기 전에 권한 설계 → 기준선 측정 → 검증 체계 → 비용 한도 순으로 정비</li><li><em>다음 결정</em>2027년 1분기 재보고 시 시범 과제 범위와 비용 한도안의 상정 여부 판단</li></ul></div><h4 class="w-h">1. 무엇이 달라졌나</h4><p class="w-head">에이전트가 맡는 일의 단위가 ‘작업’에서 ‘과제’로 확대</p><ul class="w"><li>에이전트가 절반의 확률로 완수하는 과제 길이, 2025년 초 1시간대 → 2026년 초 약 12시간(독립 평가)<sup>1)</sup><ul><li>80% 성공 기준으로는 약 1.5시간, 높은 신뢰가 필요한 업무에 맡길 수 있는 길이는 아직 짧은 수준</li><li>측정 대상은 소프트웨어 과제, 다른 분야에 그대로 적용하기에는 한계</li></ul></li><li>OpenAI, 숙련 연구자가 며칠 걸릴 연구 과제를 AI가 완수하는 단계에 도달했다고 발표(2026년 9월, 회사 발표, 외부 미검증)</li></ul><p class="w-head">적용 분야가 코드에서 설계와 실험으로 확산</p><ul class="w"><li>코드: 전문 개발자의 90%가 주 1회 이상 코딩 에이전트 사용(설문)<sup>2)</sup><ul><li>Google은 신규 코드의 75%, Anthropic은 병합 코드의 80% 이상을 AI가 작성(회사 발표)<sup>3)</sup></li><li>두 수치는 정의가 달라 직접 비교 불가, 개발 속도 향상과 동일시 불가</li></ul></li><li>설계: 반도체 설계 도구 3사가 2026년에 모두 에이전트형 제품 발표<ul><li>삼성전자, HBM4 개발 리드타임 약 50% 단축(회사 발표, 기준선 미공개)</li></ul></li><li>실험: 자율 실험실은 투자 약정과 계획 단계, 가동 성과 수치는 미공개<ul><li>Lilly·NVIDIA 최대 10억 달러 공동 연구소 발표, LG AI연구원 2026년 말 가동 계획(회사 발표)</li></ul></li></ul></div><div class="a4-foot"><ol class="w-fn"><li>METR, 과제 길이 측정(2026. 5.). 숙련자가 걸리는 시간으로 잰 과제 길이</li><li>JetBrains 개발자 조사(2026. 5.~7.)</li><li>Google Cloud Next(2026. 4.), Anthropic Institute(2026. 5. 기준)</li></ol><p class="w-pg">- 1 -</p></div></div><div class="a4"><div class="a4-in"><div class="w-run"><span>기술전략 이슈 보고</span><span>AI 에이전트, 코드·설계부터 ‘업무 흐름 위임’ 이행 시작</span></div><p class="w-head">병목이 ‘실행’에서 ‘검증’으로 이동</p><ul class="w"><li>코드 산출은 증가, 전달은 정체(공급사 분석). AI는 조직의 기존 강점과 약점을 증폭(설문)<sup>1)</sup></li><li>연구 에이전트의 정확도, 데이터 분석 85.5%·문헌 조사 82.1%인 반면 종합·해석은 57.9%(개발사 측 평가)<sup>2)</sup></li><li>근거는 소프트웨어 개발 중심, 설계·실험 분야의 근거는 미확인</li></ul><h4 class="w-h">2. 어디까지 왔나</h4><p class="w-head">R&amp;D 자동화 4단계: 당사는 2단계, 선도 기업도 3단계 초입</p><figure class="w-fig"><figcaption>그림 1. R&D 자동화 4단계와 현재 위치</figcaption><div class="steps"><div class="st st1"><b>1단계</b><strong>도구 보조</strong><p>사람이 작업 중 AI에 묻고 답을 받아 쓰는 형태</p><dl><dt>사람의 역할</dt><dd>작성자</dd><dt>현재 위치(추정)</dt><dd>기업 다수</dd></dl></div><div class="st st2 me"><b>2단계</b><strong>과제 자동화</strong><p>정해진 과제 하나를 AI가 처음부터 끝까지 수행</p><dl><dt>사람의 역할</dt><dd>과제 정의, 결과 확인</dd><dt>현재 위치(추정)</dt><dd>당사 · 국내 제조사의 설계 최적화</dd></dl></div><div class="st st3"><b>3단계</b><strong>업무 흐름 위임</strong><p>자동화된 과제 여럿을 에이전트가 이어서 수행</p><dl><dt>사람의 역할</dt><dd>목표 설정, 검토·승인</dd><dt>현재 위치(추정)</dt><dd>선도 AI 연구소의 코드·연구 실행 영역</dd></dl></div><div class="st st4"><b>4단계</b><strong>자율 연구</strong><p>연구 질문 설정과 결과 해석까지 AI가 수행</p><dl><dt>사람의 역할</dt><dd>감독</dd><dt>현재 위치(추정)</dt><dd>도달 기업 미확인</dd></dl></div></div></figure><ul class="w"><li>3단계 진입은 AI 연구소의 코드·연구 실행 영역에 한정, 근거는 모두 회사 발표</li><li>기업 전반은 실험 단계: 에이전트 확대 적용은 어느 기능에서도 10% 이하(설문), 에이전트 프로젝트의 40% 이상이 2027년 말까지 취소될 전망<sup>3)</sup></li><li>2단계에서 3단계로 넘어갈 때 필요한 것은 모델 성능보다 검증·권한·비용 통제라는 판단</li></ul><p class="w-head">최근 화제가 된 사례: 실행은 통과, 연구 판단은 미달</p><ul class="w"><li>AI Scientist(Sakana AI 외): AI가 쓴 논문 3편 중 1편이 학회 워크숍 심사 통과(2026년 3월, 학술지 게재). 본 학회 수준에는 미달</li><li>AI co-scientist(Google): 가설 생성 AI의 제안이 시험관 실험으로 확인(2026년 5월, 학술지 게재)</li><li>열린 연구 과제 독립 평가: 에이전트가 코드 작성과 실험은 사람 도움 없이 완수, 연구 결과물은 6점 만점에 2점과 1점(2026년 7월, 대상 2편)</li><li>Cadence·NVIDIA: 반도체 설계 검증 5주 → 약 하루(공급사 발표, 독립 비교 기준 부재)</li><li>LG AI연구원: 후보 물질 42만여 개에서 하루 만에 소재 후보 도출(회사 발표, 탐색 단계의 속도)</li></ul></div><div class="a4-foot"><ol class="w-fn"><li>LinearB(풀 리퀘스트 810만 건 분석), DORA 2025(약 5,000명 설문)</li><li>Kosmos 논문(2025. 11.)</li><li>McKinsey(2025. 11.), Gartner(2025. 6.)</li></ol><p class="w-pg">- 2 -</p></div></div><div class="a4"><div class="a4-in"><div class="w-run"><span>기술전략 이슈 보고</span><span>AI 에이전트, 코드·설계부터 ‘업무 흐름 위임’ 이행 시작</span></div><h4 class="w-h">3. 무엇을 조심해야 하나</h4><p class="w-head">연구 활동의 단계마다 맡길 수 있는 범위가 다름</p><ul class="w"><li>맡길 수 있는 일: 문헌 조사, 데이터 분석, 계산 실험, 문서 초안. 공통점은 결과의 자동 채점 가능</li><li>보조로 쓸 일: 가설 제시, 설계 최적화. 채택 판단은 연구자 몫</li><li>사람이 쥘 일: 종합·해석, 연구 방향 판단. 물리 실험의 자동화는 관찰 대상</li></ul><p class="w-head">효과는 과장되기 쉽고, 사고는 넓은 권한에서 발생</p><ul class="w"><li>생산성의 엄밀한 측정 부재: 숙련 개발자 작업 속도 약 19% 저하(2025년 자료, 독립 평가)<sup>1)</sup><ul><li>측정 기관은 현재는 더 빨라졌을 가능성을 인정, 다만 크기에 대한 증거는 미약하다는 입장</li></ul></li><li>과장 사례: AI의 수학 미해결 문제 풀이 발표 삭제(2025년 10월), 신소재 발견 44% 증가 논문의 철회 요청(2025년 5월)</li><li>사고 사례: 에이전트가 운영 데이터베이스와 백업을 9초 만에 삭제(2026년 4월), 보안 평가 중 격리 환경 이탈(2026년 7월)<sup>2)</sup><ul><li>공통 원인은 필요 이상으로 넓은 권한</li></ul></li><li>비용: Uber, 연간 AI 코딩 예산을 4월에 소진하고 1인당 월 1,500달러 한도 도입(보도)</li></ul><p class="w-head">국내는 선언·계획 단계, 규제 부담은 당분간 제한적</p><ul class="w"><li>삼성전자, 3월 설계~제조 에이전트 통합 전략 발표·9월 ‘에이전틱 시프트’ 포럼 개최. SK하이닉스, 2월 AI 기반 R&amp;D 전환 선언(회사 발표)</li><li>정부, 2030년 연구 생산성 2배 목표(K-문샷). 2027년 AI 예산안 9.4조 원(국회 심의 중)</li><li>인공지능기본법 2026년 1월 시행, 제재는 유예 중. 사내 연구용 에이전트는 고영향 범주 밖일 가능성(법무 확인 필요)</li><li>특허 발명자는 사람만 인정(미국·한국·유럽), 에이전트 작업에서 사람의 기여 기록 필요</li></ul><p class="w-head">인력은 감원보다 역할 이동</p><ul class="w"><li>엔지니어의 역할, 작성에서 검토·승인으로 이동. 대형 기술기업의 신규 졸업자 채용은 2019년 대비 약 65% 낮은 수준(보도, 경기 요인 미분리)</li><li>R&amp;D 조직의 인력 영향을 엄밀하게 잰 연구는 미확인</li></ul></div><div class="a4-foot"><ol class="w-fn"><li>METR 무작위 대조 실험(2025. 7. 발표), 후속 공지(2026)</li><li>피해 기업 창업자 공개 글, 보안 매체 보도(양사 인정)</li></ol><p class="w-pg">- 3 -</p></div></div><div class="a4"><div class="a4-in"><div class="w-run"><span>기술전략 이슈 보고</span><span>AI 에이전트, 코드·설계부터 ‘업무 흐름 위임’ 이행 시작</span></div><h4 class="w-h">4. 당사에 주는 뜻</h4><p class="w-head">당사는 2단계, 쟁점은 격차보다 이행 순서</p><ul class="w"><li>당사 과제별 자동화는 [ ]건 완료·[ ]건 진행, 4단계 중 2단계</li><li>과제별 자동화로 쌓은 절차, 데이터, 도구 연결은 3단계의 바탕</li><li>자동화된 과제를 잇기 전에 아래 순서로 정비 필요</li></ul><table class="w-tbl"><caption>표 1. 과제 연결 전 정비 순서</caption><thead><tr><th>순위</th><th>갖출 것</th><th>이 순서인 이유</th><th>담당·시기</th></tr></thead><tbody><tr><td>1</td><td>권한 설계</td><td>되돌릴 수 없는 사고를 막는 조건. 과제 연결 이전 완료 대상</td><td>[부서], [분기]</td></tr><tr><td>2</td><td>효과 측정 기준선</td><td>도입 뒤에는 잴 수 없는 항목. 현행 과제의 소요 기간·재작업률 확보</td><td>[부서], [분기]</td></tr><tr><td>3</td><td>검증 체계</td><td>과제별 평가 세트와 사람 승인 지점. 승인은 되돌릴 수 없는 행동에 한정</td><td>[부서], [분기]</td></tr><tr><td>4</td><td>비용 한도</td><td>1인당·과제당 한도와 모델 등급 배정 규칙. 시범 운영 착수 시 적용</td><td>[부서], [분기]</td></tr><tr><td>병행</td><td>기여 기록</td><td>특허는 사람의 실질적 기여를 요구. 연구 노트 절차에 반영</td><td>[부서], [분기]</td></tr></tbody></table><p class="w-head">전망이 갈려도 유효한 준비부터</p><ul class="w"><li>세 경우 상정: 가속(연구 판단까지 자동화), 실행만 가속(기준), 조정(비용·사고로 도입 축소)</li><li>권한 설계, 기준선 측정, 기여 기록은 세 경우 모두 유효</li><li>과제 연결 범위와 실험 설비 투자는 신호를 확인한 뒤 결정</li></ul><p class="w-head">지켜볼 신호와 다음 결정</p><ul class="w"><li>외부 신호: 독립 검증된 R&amp;D 기간 단축 수치 공개, 자율 실험실 가동 성과, 주요 기업의 사용 한도 확산</li><li>내부 신호: 자동화 과제의 사람 검토 시간 비중 [ ]%, 과제당 AI 사용 비용 [ ]원</li><li>이번 보고의 결정 요청 사항은 부재</li><li>2027년 1분기 재보고 시 시범 과제 범위와 비용 한도안의 상정 여부 판단 예정<ul><li>그 전까지 [담당 부서]가 권한 설계 현황과 기준선 측정 결과 준비</li></ul></li></ul><p class="w-note">이 보고서의 수치 40건 가운데 원문 대조를 마친 것은 1건. 나머지는 보고 전 대조 대상이며 목록은 별지에 수록. 4단계 위치는 공개 발표에 근거한 추정.</p></div><div class="a4-foot"><p class="w-pg">- 4 -</p></div></div></div>
+<article class="report" aria-label="별지">
+<header class="report-h"><p class="report-kind">별지 · 4쪽 본문에 딸린 자료</p><h3>수치 대조표와 예상 질문</h3></header>
 <section>
-<h4>1. R&D 자동화 4단계와 현재 위치</h4>
-<p class="report-term">AI 에이전트: 사람이 목표를 주면 계획을 세우고, 도구를 써서 여러 단계를 스스로 수행하는 AI. 한 번 묻고 한 번 답하는 챗봇과 구별</p>
-<ul class="gj">
-<li>업무 흐름 위임(3단계) 진입은 AI 연구소의 코드·연구 실행 영역에 한정(2026년, 회사 발표)</li>
-<li>기업 전반은 실험 단계 우세, 에이전트 프로젝트의 40% 이상이 2027년 말까지 취소될 전망(2025년 6월, Gartner 전망)</li>
-<li>아래 위치는 공개 발표에 근거한 추정, 3단계 근거는 모두 회사·공급사 발표</li>
-</ul>
-<div class="tbl wide"><table><thead><tr><th>단계</th><th>정의</th><th>사람의 역할</th><th>대표 근거</th><th>현재 위치(추정)</th></tr></thead><tbody><tr><td>1. 도구 보조</td><td>사람이 작업 중에 AI에 묻고 답을 받아 쓰는 형태</td><td>작성자</td><td>Microsoft 코드의 20~30%를 AI가 작성(2025년 4월, 회사 발표)</td><td>기업 다수의 일반 업무. AI 사용 기업 88%(2025년 11월, 설문)</td></tr><tr><td>2. 과제 자동화</td><td>정해진 과제 하나를 AI가 처음부터 끝까지 수행</td><td>과제 정의, 결과 확인</td><td>Novo Nordisk 임상 보고서 초안 10주 이상 → 10분(2026년, 회사·공급사 발표, 검토 시간 제외 가능성) / LG에너지솔루션 셀 설계 수 주 → 하루(2026년 8월, 회사 발표) / 삼성전자 HBM4 리드타임 약 50% 단축(2026년 3월, 회사 발표, 기준선 미공개)</td><td><b>당사</b>, 국내 주요 제조사의 설계 최적화 영역</td></tr><tr><td>3. 업무 흐름 위임</td><td>자동화된 과제 여럿을 에이전트가 이어서 수행</td><td>목표 설정, 검토·승인</td><td>OpenAI 연구 조직에서 사람 근무일 1일당 에이전트 근무일 3.1일(2026년 8월, 보도) / Anthropic 병합 코드 80% 이상(2026년 5월, 회사 발표) / Cadence·NVIDIA의 RTL 검증 5주 → 약 하루(2026년, 공급사·협력사 발표)</td><td>AI 연구소의 코드·연구 실행 영역, EDA 검증 일부(주장 단계). 삼성전자·SK하이닉스·LG는 선언 또는 계획 단계</td></tr><tr><td>4. 자율 연구</td><td>연구 질문 설정과 결과 해석까지 AI가 수행</td><td>감독</td><td>OpenAI의 2028년 3월 목표(회사 전망) / 독립 평가의 연구 결과물 6점 만점에 2점·1점(2026년 7월, 대상 2편) / Anthropic은 도달 시점 미제시</td><td>도달 기업 미확인</td></tr></tbody></table></div>
-</section>
-
-<section>
-<h4>2. 무엇이 달라졌나</h4>
-<h5>변화 1. 맡기는 일의 단위 확대</h5>
-<ul class="gj">
-<li>에이전트가 절반 확률로 완수하는 과제 길이, 2025년 초 1시간대 → 2026년 초 약 12시간(독립 평가 기관 METR, 숙련자 소요 시간 기준)
-<ul><li>80% 성공 기준으로는 약 1.5시간, 높은 신뢰가 필요한 업무에 맡길 수 있는 길이는 아직 짧은 수준</li><li>측정 대상은 소프트웨어 과제, 다른 분야에 그대로 적용하기에는 한계</li></ul></li>
-<li>‘며칠짜리 연구 과제 완수’는 OpenAI 자체 발표 단계(2026년 9월, 회사 발표, 외부 미검증)</li>
-</ul>
-<h5>변화 2. 코드에서 설계와 실험으로 확산</h5>
-<ul class="gj">
-<li>코드: 전문 개발자의 90%가 주 1회 이상 코딩 에이전트 사용(2026년 5~7월, JetBrains 설문)
-<ul><li>Google, 신규 코드의 75%를 AI가 생성하고 엔지니어가 승인(2026년 4월, 회사 발표, 2024년 10월 약 25%)</li><li>Anthropic, 병합 코드의 80% 이상을 AI가 작성(2026년 5월 기준, 회사 발표)</li><li>두 회사의 수치는 정의가 달라 직접 비교 불가, 개발 속도 향상과 동일시 불가</li></ul></li>
-<li>설계: 반도체 설계 도구 3사(Synopsys, Cadence, Siemens)가 2026년에 모두 에이전트형 제품 발표
-<ul><li>삼성전자, Synopsys와 협력해 HBM4 개발 리드타임 약 50% 단축(2026년 3월, 회사 발표, 기준선 미공개)</li></ul></li>
-<li>실험: 자율 실험실은 투자 약정과 계획 단계, 가동 성과 수치는 미공개
-<ul><li>Eli Lilly·NVIDIA, 5년간 최대 10억 달러 규모 공동 연구소 발표(2026년 1월, 회사 발표)</li><li>LG AI연구원, AI 자율 실험실 2026년 말 가동 계획(2026년 9월, 회사 발표)</li><li>Microsoft, R&D용 에이전트 플랫폼 정식 출시(2026년 6월, 회사 발표)</li></ul></li>
-</ul>
-<h5>변화 3. 병목이 실행에서 검증으로 이동(소프트웨어 개발 기준)</h5>
-<ul class="gj">
-<li>AI는 전달 성과를 자동으로 높이지 않고 조직의 기존 강점과 약점을 증폭(DORA 2025, 약 5,000명 설문)</li>
-<li>코드 산출은 증가, 전달은 정체(LinearB, 풀 리퀘스트 810만 건 분석, 공급사 발표)</li>
-<li>Anthropic도 사람의 코드 검토가 병목이 되고 있다고 자체 평가(2026년, 회사 발표)</li>
-<li>병목 이동의 근거는 소프트웨어 개발에 한정, 설계·실험 분야의 근거는 미확인</li>
-</ul>
-</section>
-
-<section>
-<h4>3. 최근 화제가 된 사례</h4>
-<div class="tbl"><table>
-<thead><tr><th>사례</th><th>내용</th><th>출처 등급</th><th>당사에 주는 뜻</th></tr></thead>
-<tbody>
-<tr><td>AI Scientist (Sakana AI 외)</td><td>AI가 아이디어부터 논문 작성까지 수행, 3편 중 1편이 학회 워크숍 심사 통과(2026년 3월)</td><td>학술지 게재</td><td>통과한 곳은 본 학회가 아닌 워크숍. 연구 전 과정 자동화는 초기 단계</td></tr>
-<tr><td>AI co-scientist (Google)</td><td>가설 생성 AI의 제안이 시험관 실험으로 확인(2026년 5월)</td><td>학술지 게재</td><td>가설은 후보 제시용 보조. 검증 범위는 생의학 일부</td></tr>
-<tr><td>연구 인턴 수준 달성 (OpenAI)</td><td>며칠짜리 연구 과제를 AI가 완수한다고 발표(2026년 9월)</td><td>회사 발표</td><td>목표, 정의, 측정을 한 회사가 모두 수행. 참고 수준</td></tr>
-<tr><td>열린 연구 과제 독립 평가 (저자 24인, 대상 2편)</td><td>에이전트가 코드 작성과 실험은 사람 도움 없이 완수, 연구 결과물은 6점 만점에 2점과 1점으로 거절 판정(2026년 7월)</td><td>독립 평가</td><td>실행은 위임 가능, 연구 판단은 사람 몫이라는 근거. 표본은 2편</td></tr>
-<tr><td>반도체 설계 검증 (Cadence·NVIDIA)</td><td>RTL 검증 5주 → 약 하루 단축 주장(2026년)</td><td>공급사·협력사 발표</td><td>설계 검증이 적용 선두 분야. 독립 비교 기준은 부재</td></tr>
-<tr><td>엑사원 디스커버리 (LG AI연구원)</td><td>후보 물질 42만여 개에서 하루 만에 소재 후보 도출 발표</td><td>회사 발표</td><td>탐색 단계의 속도. 상용화까지의 기간 단축과는 별개</td></tr>
-</tbody></table></div>
-</section>
-
-<section>
-<h4>4. 연구 활동 단계별로 어디까지 맡길 수 있나</h4>
-<ul class="gj">
-<li>성숙도가 높은 단계의 공통점은 결과를 자동으로 채점할 수 있다는 점, 낮은 단계의 공통점은 정답 기준의 부재</li>
-<li>관찰되는 도입 순서: 문서화·코드 → 설계 최적화 → 자율 실험</li>
-<li>당사 자동화 과제 [ ]건을 아래 여덟 칸에 배치해 다음에 이을 과제 묶음을 도출할 계획</li>
-</ul>
-<div class="tbl wide"><table><thead><tr><th>가치사슬 단계</th><th>성숙도(판단)</th><th>대표 근거</th><th>근거 등급</th><th>당사 적용 판단</th></tr></thead><tbody><tr><td>문헌·선행 조사</td><td>중상</td><td>문헌 진술 정확도 82.1%(2025년 11월, Kosmos)</td><td>개발사 측 평가</td><td>위임 가능, 인용 진위 표본 점검 필요. PubMed 논문 277편 중 1편에 허위 인용(2026년 초, 학술지 게재 분석, 미대조)</td></tr><tr><td>가설·아이디어</td><td>중</td><td>AI co-scientist 제안이 시험관 실험으로 확인(2026년 5월, Nature 게재)</td><td>학술지 게재</td><td>후보 제시용 보조, 채택 판단은 연구자. 검증 범위는 생의학 일부</td></tr><tr><td>설계·최적화</td><td>중상(자동 채점 가능 영역)</td><td>AlphaEvolve가 수학 문제 67개 중 23개에서 기존 최선 해 개선(2025년 11월, 공동 연구 논문) / EDA 3사의 에이전트 제품 발표(2026년)</td><td>논문 / 공급사 발표</td><td>평가 함수가 명확한 과제부터 적용. 에이전트가 설계한 칩의 양산 결과는 미확인</td></tr><tr><td>실험 수행(계산)</td><td>상</td><td>수백 시간의 GPU 실험을 사람 도움 없이 수행(2026년 7월, 대상 2편)</td><td>독립 평가</td><td>위임 가능, 권한과 비용 한도 전제</td></tr><tr><td>실험 수행(물리)</td><td>하</td><td>Lilly·NVIDIA 최대 10억 달러 약정(2026년 1월) / LG 자율 실험실 2026년 말 가동 계획</td><td>회사 발표</td><td>관찰 대상. 상용 소재·제품으로 이어진 검증 사례는 미확인</td></tr><tr><td>데이터 분석</td><td>중상</td><td>분석 진술 정확도 85.5%(2025년 11월, Kosmos)</td><td>개발사 측 평가</td><td>위임 가능, 결과 재현 점검 필요</td></tr><tr><td>종합·해석</td><td>하</td><td>종합 진술 정확도 57.9%(2025년 11월, Kosmos) / 연구 결과물 6점 만점에 2점·1점(2026년 7월)</td><td>개발사 측 평가 / 독립 평가</td><td>사람 전담 유지</td></tr><tr><td>문서화</td><td>상(초안 한정)</td><td>임상 보고서 초안 10주 이상 → 10분(2026년, Novo Nordisk)</td><td>회사·공급사 발표</td><td>우선 적용 영역, 검토 시간 포함 측정 필요</td></tr></tbody></table></div>
-</section>
-
-<section>
-<h4>5. 아직 안 되는 것과 사고 사례</h4>
-<ul class="gj">
-<li>연구 판단: 독립 평가 1건에서 에이전트의 연구 결과물은 6점 만점에 2점과 1점으로 모두 거절 판정(2026년 7월, 대상 논문 2편, 심사자가 AI 산출물임을 인지)</li>
-<li>생산성 효과의 엄밀한 측정 부재
-<ul><li>숙련 개발자가 AI 도구를 쓸 때 작업 속도 약 19% 저하(2025년 2~6월 자료, 독립 평가)</li><li>측정 기관은 현재는 더 빨라졌을 가능성이 높다고 보나 크기에 대한 증거는 매우 약하다는 입장(2026년, 독립 평가 기관 공지)</li></ul></li>
-<li>과장 발표 사례
-<ul><li>AI가 수학 미해결 문제를 풀었다는 발표, 기존 문헌의 해법을 찾아낸 것으로 드러나 삭제(2025년 10월, 보도)</li><li>AI 지원 연구자가 신소재를 44% 더 발견했다는 논문, 소속 대학이 자료를 신뢰할 수 없다며 철회 요청(2025년 5월, 보도)</li></ul></li>
-<li>에이전트 사고 사례
-<ul><li>코딩 에이전트가 운영 데이터베이스와 백업을 9초 만에 삭제(2026년 4월, 당사자 설명, 원인은 필요 이상으로 넓은 권한)</li><li>OpenAI 내부 보안 평가 중 모델이 격리 환경을 벗어나 외부 인프라에 접근(2026년 7월, 보도·양사 인정)</li><li>Uber, 연간 AI 코딩 예산을 4월에 소진하고 1인당 월 1,500달러 한도 도입(2026년, 보도)</li></ul></li>
-</ul>
-</section>
-
-<section>
-<h4>6. 국내 주요 기업은 선언·계획 단계, 실적 수치는 설계 최적화에 한정</h4>
-<ul class="gj">
-<li>국내 기업(모두 회사 발표)
-<ul><li>삼성전자, 2026년 3월 GTC에서 설계~제조 에이전트 통합 최적화 전략 발표</li><li>같은 해 9월 30일 ‘에이전틱 시프트’를 주제로 AI 포럼 개최, 에이전트를 전사 의제로 격상</li><li>SK하이닉스, 인력 투입 중심 R&D의 한계를 들어 AI 기반 R&D 전환 선언(2026년 2월)</li><li>LG에너지솔루션, 셀 설계 기간을 수 주에서 하루 수준으로 단축했다고 발표(2026년 8월)</li><li>당사 업종 경쟁사 [2개사]의 공개 발표 추가 예정</li></ul></li>
-<li>정부
-<ul><li>K-문샷 추진전략, 2030년까지 연구 생산성 2배 목표(2026년 2월 의결)</li><li>2027년 정부 예산안의 AI 예산 5.1조 원 → 9.4조 원(정부안, 국회 심의 중)</li></ul></li>
-<li>규제와 당사 부담
-<ul><li>인공지능기본법 2026년 1월 22일 시행, 과태료와 사실조사는 1년 이상 유예(종료일 미확정)</li><li>사내 연구용 에이전트는 고영향 범주 밖일 가능성, 법무 확인 필요(판단)</li><li>EU 고위험 AI 의무 적용, 2027년 12월로 연기(2026년 7월 발효)</li><li>미국·한국·유럽 모두 특허 발명자는 사람만 인정, 사람의 실질적 기여 요구</li></ul></li>
-</ul>
-</section>
-
-<section>
-<h4>7. 인력과 조직: 확인되는 변화는 감원보다 역할 이동</h4>
-<ul class="gj">
-<li>엔지니어의 역할, 작성에서 검토·승인으로 이동(2026년, 회사 발표)</li>
-<li>대형 기술기업의 신규 졸업자 채용, 2019년 대비 약 65% 낮은 수준(2026년, 보도, 경기 요인 미분리)</li>
-<li>Siemens에서는 노사협의회가 에이전트 도입을 공동결정 사안으로 제기(2026년, 보도)</li>
-<li>R&D 조직의 생산성·인력 영향을 엄밀하게 잰 연구는 미확인</li>
-<li>당사 준비 사항: 검토자 역할에 맞춘 신입 육성 경로, 노사 협의 시점 검토</li>
-</ul>
-</section>
-
-<section>
-<h4>8. 당사에 주는 뜻: 과제 연결 전에 갖출 것과 순서</h4>
-<h5>당사 위치</h5>
-<ul class="gj">
-<li>당사 위치는 4단계 모형의 2단계(과제 자동화), 완료 [ ]건·진행 [ ]건</li>
-<li>3단계(업무 흐름 위임) 이행 조건은 검증·권한·비용 세 가지, 당사 충족 수준은 [점검 결과] 기재 예정</li>
-<li>당사의 과제별 자동화 자산(절차, 데이터, 도구 연결)은 3단계의 바탕으로 판단</li>
-</ul>
-<h5>정비 순서</h5>
-<div class="tbl"><table>
-<thead><tr><th>순위</th><th>갖출 것</th><th>이 순서인 이유</th><th>근거 사례</th><th>담당·시기</th></tr></thead>
-<tbody>
-<tr><td>1</td><td>권한 설계</td><td>되돌릴 수 없는 사고를 막는 조건. 과제 연결 이전 완료 대상</td><td>운영 데이터베이스 삭제, 격리 환경 이탈</td><td>[부서], [분기]</td></tr>
-<tr><td>2</td><td>효과 측정 기준선</td><td>도입 뒤에는 잴 수 없는 항목. 현행 과제의 소요 기간·재작업률 우선 확보</td><td>독립 검증 수치의 부재</td><td>[부서], [분기]</td></tr>
-<tr><td>3</td><td>검증 체계</td><td>과제별 평가 세트와 사람 승인 지점. 승인은 되돌릴 수 없거나 금액이 큰 행동에 한정</td><td>해석 정확도 57.9%, 연구 결과물 거절 판정</td><td>[부서], [분기]</td></tr>
-<tr><td>4</td><td>비용 한도</td><td>1인당·과제당 한도와 모델 등급 배정 규칙. 시범 운영 착수 시점에 적용</td><td>Uber의 예산 조기 소진</td><td>[부서], [분기]</td></tr>
-<tr><td>병행</td><td>기여 기록</td><td>특허 출원 가능성이 있는 연구 과제부터 연구 노트 절차 적용</td><td>특허 당국의 실질적 기여 요구</td><td>[부서], [분기]</td></tr>
-</tbody></table></div>
-</section>
-
-<section>
-<h4>9. 2027~2028년 전망과 지켜볼 신호</h4>
-<ul class="gj">
-<li>빠르다는 쪽: OpenAI의 2028년 3월 ‘감독하의 자동화된 연구자’ 목표(회사 전망), Anthropic 공동창업자의 2028년 말 자율 AI 연구개발 확률 60% 이상 견해(보도)</li>
-<li>느리다는 쪽: FutureSearch의 약 3배 장기 소요 전망(전망), AI 2027 저자진의 현실 진행 속도 70~90% 자체 평가(전망)</li>
-<li>세 시나리오 모두에서 유효한 준비(권한, 기준선, 기여 기록)를 먼저 하고, 시나리오에 따라 갈리는 투자(과제 연결 범위, 자율 실험 설비)는 신호를 본 뒤 결정하는 순서가 합리적이라는 판단</li>
-</ul>
-<div class="tbl wide"><table><thead><tr><th>구분</th><th>A. 가속</th><th>B. 실행만 가속(기준)</th><th>C. 조정</th></tr></thead><tbody><tr><td>내용</td><td>연구 판단까지 자동화 진전, 주 단위 과제 위임</td><td>실행 자동화는 계속 확대, 검증과 판단은 사람 병목으로 잔존</td><td>비용·사고·성과 미달로 도입 축소</td></tr><tr><td>지지 근거</td><td>OpenAI 2028년 3월 목표(회사 전망) / 과제 길이 약 4개월 배증 서술(2026년, Anthropic 글, METR 공식 수치 여부 미확인)</td><td>독립 평가의 거절 판정(2026년 7월) / 해석 정확도 57.9% / Anthropic의 코드 검토 병목 자체 평가</td><td>Gartner의 40% 이상 취소 전망(2025년 6월) / Uber 연간 예산 4월 소진(2026년, 보도) / 확대 적용 10% 이하(2025년 11월, 설문)</td></tr><tr><td>조기 신호</td><td>독립 평가에서 연구 결과물 수락 수준 점수 / 80% 기준 과제 길이의 뚜렷한 상승 / 에이전트가 설계한 칩의 양산 사례 공개</td><td>회사 발표 수치는 계속 증가, 독립 검증 수치는 계속 미확인 / 검토 인력 부족 보고 확대</td><td>주요 기업의 사용 한도·라이선스 회수 확산 / 대형 사고에 따른 규제 유예 조기 종료 / 자율 실험실 가동 지연</td></tr><tr><td>당사 대응</td><td>과제 연결 범위 확대, 연구 인력의 목표 설정·검토 역량 전환 가속</td><td>검증 체계와 평가 세트에 우선 투자, 자동 채점 가능한 과제부터 연결</td><td>과제별 자동화 유지, 연결 계획 보류, 비용 대비 효과가 확인된 과제만 지속</td></tr><tr><td>세 경우 공통</td><td>권한 설계, 당사 기준선 측정, 기여 기록은 어느 시나리오에서도 유효한 준비</td><td>좌동</td><td>좌동</td></tr></tbody></table></div>
-<h5>지켜볼 지표</h5>
-<div class="tbl"><table>
-<thead><tr><th>구분</th><th>지표</th><th>현재 수준</th><th>다시 보고할 기준</th><th>그때 당사가 할 일</th></tr></thead>
-<tbody>
-<tr><td>외부</td><td>과제 길이 측정(METR)</td><td>50% 기준 약 12시간, 80% 기준 약 1.5시간(2026년 초)</td><td>다음 측정 공개 시 수치와 무관하게 보고. 측정 중단 시 대체 지표로 전환</td><td>맡길 과제 길이 재판단</td></tr>
-<tr><td>외부</td><td>독립 검증된 R&D 기간 단축 수치</td><td>미확인</td><td>경쟁사나 학계의 검증 수치 공개</td><td>당사 기준선과 비교</td></tr>
-<tr><td>외부</td><td>자율 실험실 가동 성과</td><td>가동 초기 또는 계획 단계</td><td>상용 소재·제품으로 이어진 사례 공개</td><td>실험 자동화 투자 재검토</td></tr>
-<tr><td>외부</td><td>주요 기업의 사용 한도·라이선스 회수</td><td>Uber 등 일부 사례</td><td>확산 추세 확인</td><td>비용 한도안 조정</td></tr>
-<tr><td>내부</td><td>자동화 과제의 사람 검토 시간 비중</td><td>[현재 %]</td><td>[기준 %] 초과</td><td>검증 체계 보강</td></tr>
-<tr><td>내부</td><td>과제당 AI 사용 비용</td><td>[현재 금액]</td><td>분기 예산의 [기준 %] 도달</td><td>모델 등급 배정 조정</td></tr>
-</tbody></table></div>
-</section>
-
-<section>
-<h4>붙임 1. 수치별 출처와 원문 대조 (40건 중 1건 대조 완료)</h4>
+<h4>별지 1. 수치별 출처와 원문 대조 (40건 중 1건 대조 완료)</h4>
 <div class="tbl"><table>
 <thead><tr><th>수치·사실</th><th>출처</th><th>등급</th><th>대조</th></tr></thead>
 <tbody><tr><td>과제 길이 약 12시간(50% 기준), 약 1.5시간(80% 기준)</td><td>METR 시간 지평 측정, 2026년 5월 보고서</td><td>독립 평가</td><td>□</td></tr><tr><td>OpenAI ‘며칠짜리 연구 과제 완수’ 단계</td><td>OpenAI 게시글, 2026. 9. 6.</td><td>회사 발표</td><td>□</td></tr><tr><td>사람 근무일 1일당 에이전트 근무일 3.1일</td><td>eWeek 보도(OpenAI 자료 인용), 2026년 8월 기준</td><td>보도</td><td>□</td></tr><tr><td>개발자 90%가 주 1회 이상 사용</td><td>JetBrains 조사, 2026년 5~7월</td><td>설문</td><td>□</td></tr><tr><td>Google 신규 코드 75%(2024년 10월 약 25%)</td><td>Cloud Next 발표, 2026. 4. 22.</td><td>회사 발표</td><td>□</td></tr><tr><td>Anthropic 병합 코드 80% 이상</td><td>Anthropic Institute 글, 2026년 5월 기준</td><td>회사 발표</td><td>확인</td></tr><tr><td>Microsoft 코드의 20~30%</td><td>CEO 발언, 2025년 4월</td><td>회사 발표</td><td>□</td></tr><tr><td>확대 적용 10% 이하, AI 사용 기업 88%</td><td>McKinsey State of AI 2025, 2025. 11.</td><td>설문</td><td>□</td></tr><tr><td>에이전트 프로젝트 40% 이상 취소 전망</td><td>Gartner 보도자료, 2025. 6. 25.</td><td>전망</td><td>□</td></tr><tr><td>HBM4 리드타임 약 50% 단축</td><td>삼성전자 GTC 2026 발표, 2026년 3월</td><td>회사 발표</td><td>□</td></tr><tr><td>삼성 AI 포럼 ‘에이전틱 시프트’, 2026. 9. 30.</td><td>삼성전자 뉴스룸</td><td>회사 발표</td><td>□</td></tr><tr><td>SK하이닉스 AI 기반 R&amp;D 전환 선언, 2026. 2. 11.</td><td>세미콘 코리아 기조연설 보도</td><td>보도</td><td>□</td></tr><tr><td>LG에너지솔루션 셀 설계 수 주 → 하루</td><td>회사 발표 보도, 2026년 8월</td><td>회사 발표</td><td>□</td></tr><tr><td>LG 자율 실험실 2026년 말 가동 계획, 후보 42만여 개</td><td>LG 보도자료, 2026년</td><td>회사 발표</td><td>□</td></tr><tr><td>Lilly·NVIDIA 최대 10억 달러</td><td>NVIDIA 보도자료, 2026. 1. 12.</td><td>회사 발표</td><td>□</td></tr><tr><td>Microsoft Discovery 정식 출시</td><td>Azure 공지, 2026. 6. 4.</td><td>회사 발표</td><td>□</td></tr><tr><td>임상 보고서 초안 10주 이상 → 10분</td><td>Novo Nordisk 고객 사례(공급사 페이지), 2026년</td><td>회사·공급사 발표</td><td>□</td></tr><tr><td>RTL 검증 5주 → 약 하루</td><td>Cadence·NVIDIA 발표, 2026년</td><td>공급사 발표</td><td>□</td></tr><tr><td>AI Scientist 3편 중 1편 워크숍 심사 통과</td><td>Nature 게재 논문, 2026. 3. 26.</td><td>학술지 게재</td><td>□</td></tr><tr><td>AI co-scientist 제안의 시험관 실험 확인</td><td>Nature 게재 논문, 2026. 5. 19.</td><td>학술지 게재</td><td>□</td></tr><tr><td>수학 문제 67개 중 23개 개선</td><td>AlphaEvolve 공동 연구 논문(arXiv 2511.02864)</td><td>논문</td><td>□</td></tr><tr><td>정확도 85.5% / 82.1% / 57.9%</td><td>Kosmos 논문(arXiv 2511.02824), 2025. 11.</td><td>개발사 측 평가</td><td>□</td></tr><tr><td>연구 결과물 6점 만점에 2점·1점(대상 2편)</td><td>Kirgis 외 논문(arXiv 2607.27191), 2026. 7.</td><td>독립 평가</td><td>□</td></tr><tr><td>AI는 조직의 강점과 약점을 증폭(약 5,000명)</td><td>DORA 2025 보고서</td><td>설문</td><td>□</td></tr><tr><td>코드 산출 증가, 전달 정체(풀 리퀘스트 810만 건)</td><td>LinearB 분석</td><td>공급사 발표</td><td>□</td></tr><tr><td>숙련 개발자 작업 속도 약 19% 저하</td><td>METR 실험, 2025년 2~6월 자료</td><td>독립 평가</td><td>□</td></tr><tr><td>METR ‘지금은 더 빨라졌을 가능성, 크기 증거는 매우 약함’</td><td>METR 공지, 2026년 2~3월</td><td>독립 평가 기관 공지</td><td>□</td></tr><tr><td>수학 미해결 문제 발표 삭제, 2025. 10.</td><td>언론 보도</td><td>보도</td><td>□</td></tr><tr><td>신소재 44% 논문 철회 요청, 2025. 5.</td><td>MIT 공지 보도</td><td>보도</td><td>□</td></tr><tr><td>운영 데이터베이스 9초 만에 삭제, 2026. 4.</td><td>피해 기업 창업자 공개</td><td>당사자 설명</td><td>□</td></tr><tr><td>격리 환경 이탈, 2026. 7.</td><td>보안 매체 보도, 양사 인정</td><td>보도</td><td>□</td></tr><tr><td>Uber 연간 예산 4월 소진, 1인당 월 1,500달러 한도</td><td>언론 보도(CTO 발언 인용)</td><td>보도</td><td>□</td></tr><tr><td>신규 졸업자 채용 2019년 대비 약 65% 낮은 수준</td><td>SignalFire 보고서 인용 보도, 2026년</td><td>보도</td><td>□</td></tr><tr><td>Siemens 노사협의회의 공동결정 사안 제기</td><td>Counterpoint 분석, 2026년</td><td>보도</td><td>□</td></tr><tr><td>K-문샷 2030년 연구 생산성 2배</td><td>국가인공지능전략위원회 의결, 2026. 2. 25.</td><td>정부 자료</td><td>□</td></tr><tr><td>2027년 AI 예산 5.1조 → 9.4조 원</td><td>과기정통부 예산안(국회 심의 중)</td><td>정부 자료</td><td>□</td></tr><tr><td>인공지능기본법 2026. 1. 22. 시행, 제재 유예</td><td>법령, 정부 발표 보도</td><td>법령·보도</td><td>□</td></tr><tr><td>EU 고위험 의무 2027. 12. 2.로 연기</td><td>EU 규정 2026/1744</td><td>법령</td><td>□</td></tr><tr><td>OpenAI 2028년 3월 목표, 2028년 말 확률 60% 이상 견해</td><td>회사 발표, 보도</td><td>회사 전망·보도</td><td>□</td></tr><tr><td>약 3배 장기 소요 전망, 진행 속도 70~90% 자체 평가</td><td>FutureSearch, AI Futures</td><td>전망</td><td>□</td></tr></tbody>
 <caption>‘확인’은 원문 페이지를 직접 열어 본 것. □는 검색 요약으로만 확인한 것. 대조하지 못한 수치는 보고 전에 삭제하거나 본문 같은 줄에 ‘(미대조)’ 표기.</caption></table></div>
 </section>
-
 <section>
-<h4>붙임 2. 예상 질문과 답</h4>
+<h4>별지 2. 예상 질문과 답</h4>
 <div class="tbl wide"><table><thead><tr><th>질문</th><th>한 줄 답</th></tr></thead><tbody></tbody></table></div>
 </section>
 </article>
@@ -707,6 +581,14 @@ vocab-browser { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(-
 <p>이 초안은 사장단 회의에 그대로 올릴 수 없고, 사흘 정도의 보완을 거치면 올릴 수 있는 수준이다. 가장 큰 강점은 수치마다 누가 잰 것인지를 같은 줄에 적은 출처 규율이고, 두 번째 강점은 한계와 사고 사례에 한 절을 통째로 내준 균형이다. 가장 큰 약점은 변화의 구조를 한눈에 보여 주는 분석 틀이 없다는 점이다. 당사가 어느 단계에 있고 선도 기업과 국내 경쟁사가 어디에 있는지를 같은 축 위에 놓지 않았기 때문에 &quot;같은 방향&quot;이라는 말이 판단이 아니라 인상으로 읽힌다. 두 번째 약점은 헤드 메시지가 가장 약한 근거에 기대고 있다는 점이다. 요지 첫 줄의 &quot;며칠짜리 과제&quot;는 한 회사의 자체 발표이고, 제목의 &quot;이동&quot;은 기업 전반의 도입이 넓지만 얕다는 노트의 핵심 사실을 빼고 쓴 표현이다. 세 번째 약점은 의사결정과의 연결이 끊겨 있다는 점이다. 준비할 다섯 가지에 순서, 시기, 규모, 담당이 없고, 인력 영향과 비용 규모처럼 CEO가 반드시 묻는 주제가 본문에 없다. 여기에 붙임 표의 수치 16건 중 원문 대조가 1건뿐이라는 사실이 겹치므로, 대조를 끝내기 전에는 어떤 수치도 회의 자료에 싣지 않는 것이 맞다.</p>
 <h3>평가표</h3>
 <div class="tbl"><table><thead><tr><th>항목</th><th>점수</th><th>한 줄 사유</th></tr></thead><tbody></tbody></table></div>
+<h3>검토자가 제안한 분석 틀 세 가지</h3>
+<p>검토자는 초안에 없던 틀 세 가지를 내용까지 채워 제안했다. 개선판은 첫째 틀을 그림 1로 싣고, 둘째와 셋째 틀은 표 대신 항목으로 풀어 3절과 4절에 넣었다. 원래의 표는 아래와 같다.</p>
+<h4>틀 A. R&D 자동화 4단계와 위치</h4>
+<div class="tbl wide"><table><thead><tr><th>단계</th><th>정의</th><th>사람의 역할</th><th>대표 근거</th><th>현재 위치(추정)</th></tr></thead><tbody><tr><td>1. 도구 보조</td><td>사람이 작업 중에 AI에 묻고 답을 받아 쓰는 형태</td><td>작성자</td><td>Microsoft 코드의 20~30%를 AI가 작성(2025년 4월, 회사 발표)</td><td>기업 다수의 일반 업무. AI 사용 기업 88%(2025년 11월, 설문)</td></tr><tr><td>2. 과제 자동화</td><td>정해진 과제 하나를 AI가 처음부터 끝까지 수행</td><td>과제 정의, 결과 확인</td><td>Novo Nordisk 임상 보고서 초안 10주 이상 → 10분(2026년, 회사·공급사 발표, 검토 시간 제외 가능성) / LG에너지솔루션 셀 설계 수 주 → 하루(2026년 8월, 회사 발표) / 삼성전자 HBM4 리드타임 약 50% 단축(2026년 3월, 회사 발표, 기준선 미공개)</td><td><b>당사</b>, 국내 주요 제조사의 설계 최적화 영역</td></tr><tr><td>3. 업무 흐름 위임</td><td>자동화된 과제 여럿을 에이전트가 이어서 수행</td><td>목표 설정, 검토·승인</td><td>OpenAI 연구 조직에서 사람 근무일 1일당 에이전트 근무일 3.1일(2026년 8월, 보도) / Anthropic 병합 코드 80% 이상(2026년 5월, 회사 발표) / Cadence·NVIDIA의 RTL 검증 5주 → 약 하루(2026년, 공급사·협력사 발표)</td><td>AI 연구소의 코드·연구 실행 영역, EDA 검증 일부(주장 단계). 삼성전자·SK하이닉스·LG는 선언 또는 계획 단계</td></tr><tr><td>4. 자율 연구</td><td>연구 질문 설정과 결과 해석까지 AI가 수행</td><td>감독</td><td>OpenAI의 2028년 3월 목표(회사 전망) / 독립 평가의 연구 결과물 6점 만점에 2점·1점(2026년 7월, 대상 2편) / Anthropic은 도달 시점 미제시</td><td>도달 기업 미확인</td></tr></tbody></table></div>
+<h4>틀 B. 연구 활동 단계별 에이전트 성숙도</h4>
+<div class="tbl wide"><table><thead><tr><th>가치사슬 단계</th><th>성숙도(판단)</th><th>대표 근거</th><th>근거 등급</th><th>당사 적용 판단</th></tr></thead><tbody><tr><td>문헌·선행 조사</td><td>중상</td><td>문헌 진술 정확도 82.1%(2025년 11월, Kosmos)</td><td>개발사 측 평가</td><td>위임 가능, 인용 진위 표본 점검 필요. PubMed 논문 277편 중 1편에 허위 인용(2026년 초, 학술지 게재 분석, 미대조)</td></tr><tr><td>가설·아이디어</td><td>중</td><td>AI co-scientist 제안이 시험관 실험으로 확인(2026년 5월, Nature 게재)</td><td>학술지 게재</td><td>후보 제시용 보조, 채택 판단은 연구자. 검증 범위는 생의학 일부</td></tr><tr><td>설계·최적화</td><td>중상(자동 채점 가능 영역)</td><td>AlphaEvolve가 수학 문제 67개 중 23개에서 기존 최선 해 개선(2025년 11월, 공동 연구 논문) / EDA 3사의 에이전트 제품 발표(2026년)</td><td>논문 / 공급사 발표</td><td>평가 함수가 명확한 과제부터 적용. 에이전트가 설계한 칩의 양산 결과는 미확인</td></tr><tr><td>실험 수행(계산)</td><td>상</td><td>수백 시간의 GPU 실험을 사람 도움 없이 수행(2026년 7월, 대상 2편)</td><td>독립 평가</td><td>위임 가능, 권한과 비용 한도 전제</td></tr><tr><td>실험 수행(물리)</td><td>하</td><td>Lilly·NVIDIA 최대 10억 달러 약정(2026년 1월) / LG 자율 실험실 2026년 말 가동 계획</td><td>회사 발표</td><td>관찰 대상. 상용 소재·제품으로 이어진 검증 사례는 미확인</td></tr><tr><td>데이터 분석</td><td>중상</td><td>분석 진술 정확도 85.5%(2025년 11월, Kosmos)</td><td>개발사 측 평가</td><td>위임 가능, 결과 재현 점검 필요</td></tr><tr><td>종합·해석</td><td>하</td><td>종합 진술 정확도 57.9%(2025년 11월, Kosmos) / 연구 결과물 6점 만점에 2점·1점(2026년 7월)</td><td>개발사 측 평가 / 독립 평가</td><td>사람 전담 유지</td></tr><tr><td>문서화</td><td>상(초안 한정)</td><td>임상 보고서 초안 10주 이상 → 10분(2026년, Novo Nordisk)</td><td>회사·공급사 발표</td><td>우선 적용 영역, 검토 시간 포함 측정 필요</td></tr></tbody></table></div>
+<h4>틀 C. 2027~2028년 시나리오와 조기 신호</h4>
+<div class="tbl wide"><table><thead><tr><th>구분</th><th>A. 가속</th><th>B. 실행만 가속(기준)</th><th>C. 조정</th></tr></thead><tbody><tr><td>내용</td><td>연구 판단까지 자동화 진전, 주 단위 과제 위임</td><td>실행 자동화는 계속 확대, 검증과 판단은 사람 병목으로 잔존</td><td>비용·사고·성과 미달로 도입 축소</td></tr><tr><td>지지 근거</td><td>OpenAI 2028년 3월 목표(회사 전망) / 과제 길이 약 4개월 배증 서술(2026년, Anthropic 글, METR 공식 수치 여부 미확인)</td><td>독립 평가의 거절 판정(2026년 7월) / 해석 정확도 57.9% / Anthropic의 코드 검토 병목 자체 평가</td><td>Gartner의 40% 이상 취소 전망(2025년 6월) / Uber 연간 예산 4월 소진(2026년, 보도) / 확대 적용 10% 이하(2025년 11월, 설문)</td></tr><tr><td>조기 신호</td><td>독립 평가에서 연구 결과물 수락 수준 점수 / 80% 기준 과제 길이의 뚜렷한 상승 / 에이전트가 설계한 칩의 양산 사례 공개</td><td>회사 발표 수치는 계속 증가, 독립 검증 수치는 계속 미확인 / 검토 인력 부족 보고 확대</td><td>주요 기업의 사용 한도·라이선스 회수 확산 / 대형 사고에 따른 규제 유예 조기 종료 / 자율 실험실 가동 지연</td></tr><tr><td>당사 대응</td><td>과제 연결 범위 확대, 연구 인력의 목표 설정·검토 역량 전환 가속</td><td>검증 체계와 평가 세트에 우선 투자, 자동 채점 가능한 과제부터 연결</td><td>과제별 자동화 유지, 연결 계획 보류, 비용 대비 효과가 확인된 과제만 지속</td></tr><tr><td>세 경우 공통</td><td>권한 설계, 당사 기준선 측정, 기여 기록은 어느 시나리오에서도 유효한 준비</td><td>좌동</td><td>좌동</td></tr></tbody></table></div>
 <h3>지적 사항 16건</h3>
 <p>중요도가 높은 것부터 실었다. ‘고치기 전’은 초안의 문구이고 ‘고친 뒤’는 검토자가 다시 쓴 문구다. 개선판에는 이 문구를 거의 그대로 반영했다.</p>
 </div>
@@ -716,10 +598,10 @@ vocab-browser { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(-
 <section class="sheet" id="changes">
 <div class="folio"><span>별첨</span><span>달라진 것</span></div>
 <div class="prose">
-<h3>초안에서 개선판으로: 달라진 열여섯 곳</h3>
+<h3>초안에서 개선판으로: 달라진 열일곱 곳</h3>
 <div class="tbl wide"><table>
 <thead><tr><th>대목</th><th>초안</th><th>개선판</th><th>지적 번호</th></tr></thead>
-<tbody><tr><td>요지 첫 줄</td><td class="x">한 회사의 자체 발표(‘며칠짜리 과제’)가 대표 문장</td><td>독립 평가 수치(12시간, 1.5시간)를 앞세우고 자체 발표는 등급을 붙여 뒤로</td><td>①</td></tr><tr><td>제목과 범위</td><td class="x">‘이동’의 주체와 영역이 한정되지 않음</td><td>‘코드·설계부터 이행 시작’으로 한정, 기업 전반은 실험 단계라는 사실 추가</td><td>②</td></tr><tr><td>당사 위치</td><td class="x">‘같은 방향’이라는 인상</td><td>4단계 모형 위에 당사·선도 기업·국내 기업을 함께 표시</td><td>③ 틀 A</td></tr><tr><td>맡길 수 있는 범위</td><td class="x">코드 → 설계 → 실험의 나열</td><td>연구 활동 여덟 단계별 성숙도와 적용 판단</td><td>틀 B</td></tr><tr><td>준비 사항</td><td class="x">다섯 가지를 같은 무게로 나열</td><td>순위, 이유, 담당·시기를 붙인 정비 순서</td><td>④</td></tr><tr><td>끝맺음</td><td class="x">재보고 시점만 제시</td><td>다음 보고에서 무엇을 판단할지 예고</td><td>⑤</td></tr><tr><td>수치 대조</td><td class="x">16건만 표에 등재, 본문에 표 밖 수치 다수</td><td>본문 수치 40건 전부 등재, 머리에 ‘대조 전 초안’ 표시</td><td>⑥</td></tr><tr><td>지켜볼 지표</td><td class="x">측정할 수 없는 문턱, 외부 지표만</td><td>관측 가능한 기준으로 교체, 내부 지표 2개와 ‘그때 할 일’ 추가</td><td>⑦</td></tr><tr><td>전망</td><td class="x">한 회사의 목표와 현재 평가를 맞세움</td><td>전망끼리 맞세우고 시나리오 세 가지와 조기 신호로 정리</td><td>⑧ 틀 C</td></tr><tr><td>반대 근거</td><td class="x">논문 2편 평가를 ‘낙제 수준’으로 일반화</td><td>점수와 표본(2편), 평가 조건을 그대로 표기</td><td>⑨</td></tr><tr><td>출처 귀속</td><td class="x">DORA에 다른 자료의 결론, 삼성 두 행사를 한 줄로</td><td>자료별로 결론을 나누고 날짜를 분리</td><td>⑩ ⑪</td></tr><tr><td>규제</td><td class="x">일정만 나열</td><td>당사 부담의 유무에 대한 판단 추가</td><td>⑫</td></tr><tr><td>AI 작성 비율</td><td class="x">75%, 80%를 나란히</td><td>정의가 달라 비교할 수 없고 속도 향상과 다르다는 단서</td><td>⑬</td></tr><tr><td>인력·조직</td><td class="x">본문에 내용 부재</td><td>한 절 신설: 역할 이동, 채용, 노사 협의</td><td>⑭</td></tr><tr><td>감속 실험</td><td class="x">2025년 수치만 인용</td><td>측정 기관의 현재 견해를 함께 표기</td><td>⑮</td></tr><tr><td>평가어</td><td class="x">‘투자 집중’, 주체 없는 사고 서술</td><td>약정·계획 단계라는 사실로 교체, 주체와 등급 표기</td><td>⑯</td></tr></tbody></table></div>
+<tbody><tr><td>요지 첫 줄</td><td class="x">한 회사의 자체 발표(‘며칠짜리 과제’)가 대표 문장</td><td>독립 평가 수치(12시간, 1.5시간)를 앞세우고 자체 발표는 등급을 붙여 뒤로</td><td>①</td></tr><tr><td>제목과 범위</td><td class="x">‘이동’의 주체와 영역이 한정되지 않음</td><td>‘코드·설계부터 이행 시작’으로 한정, 기업 전반은 실험 단계라는 사실 추가</td><td>②</td></tr><tr><td>당사 위치</td><td class="x">‘같은 방향’이라는 인상</td><td>4단계 모형 위에 당사·선도 기업·국내 기업을 함께 표시</td><td>③ 틀 A</td></tr><tr><td>맡길 수 있는 범위</td><td class="x">코드 → 설계 → 실험의 나열</td><td>연구 활동 여덟 단계별 성숙도와 적용 판단</td><td>틀 B</td></tr><tr><td>준비 사항</td><td class="x">다섯 가지를 같은 무게로 나열</td><td>순위, 이유, 담당·시기를 붙인 정비 순서</td><td>④</td></tr><tr><td>끝맺음</td><td class="x">재보고 시점만 제시</td><td>다음 보고에서 무엇을 판단할지 예고</td><td>⑤</td></tr><tr><td>수치 대조</td><td class="x">16건만 표에 등재, 본문에 표 밖 수치 다수</td><td>본문 수치 40건 전부 등재, 머리에 ‘대조 전 초안’ 표시</td><td>⑥</td></tr><tr><td>지켜볼 지표</td><td class="x">측정할 수 없는 문턱, 외부 지표만</td><td>관측 가능한 기준으로 교체, 내부 지표 2개와 ‘그때 할 일’ 추가</td><td>⑦</td></tr><tr><td>전망</td><td class="x">한 회사의 목표와 현재 평가를 맞세움</td><td>전망끼리 맞세우고 시나리오 세 가지와 조기 신호로 정리</td><td>⑧ 틀 C</td></tr><tr><td>반대 근거</td><td class="x">논문 2편 평가를 ‘낙제 수준’으로 일반화</td><td>점수와 표본(2편), 평가 조건을 그대로 표기</td><td>⑨</td></tr><tr><td>출처 귀속</td><td class="x">DORA에 다른 자료의 결론, 삼성 두 행사를 한 줄로</td><td>자료별로 결론을 나누고 날짜를 분리</td><td>⑩ ⑪</td></tr><tr><td>규제</td><td class="x">일정만 나열</td><td>당사 부담의 유무에 대한 판단 추가</td><td>⑫</td></tr><tr><td>AI 작성 비율</td><td class="x">75%, 80%를 나란히</td><td>정의가 달라 비교할 수 없고 속도 향상과 다르다는 단서</td><td>⑬</td></tr><tr><td>인력·조직</td><td class="x">본문에 내용 부재</td><td>한 절 신설: 역할 이동, 채용, 노사 협의</td><td>⑭</td></tr><tr><td>감속 실험</td><td class="x">2025년 수치만 인용</td><td>측정 기관의 현재 견해를 함께 표기</td><td>⑮</td></tr><tr><td>평가어</td><td class="x">‘투자 집중’, 주체 없는 사고 서술</td><td>약정·계획 단계라는 사실로 교체, 주체와 등급 표기</td><td>⑯</td></tr><tr><td>형식과 분량</td><td class="x">표 열 개가 이어지는 긴 문서</td><td>A4 4쪽. 요약 상자, 헤드 메시지, 그림 하나와 표 하나. 출처는 쪽 아래 주석, 대조표는 별지</td><td>작성자 요청</td></tr></tbody></table></div>
 </div>
 </section>
 

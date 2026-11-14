@@ -17,7 +17,8 @@
 | 9 어휘 사전 | 보고서 낱말 2,220개(공통 2,000개, 기술전략 220개). 상황 묶음 → 분류 → 소분류로 찾아가기, 부분 일치·유사어·초성 검색, 빈도순·가나다순 |
 | 기술전략팀 표현집 | 여덟 가지 상황의 문형, 견본 보고 두 가지. 사전에 기술전략 용어 묶음 추가 |
 | 부록 `trend-guide.html` | 동향 보고서 쓰는 법: 쓰는 순서 여덟 단계, 출처 등급, 분석 틀 세 가지, 점검표 |
-| 별첨 `trend-report.html` | 「AI 에이전트 R&D 자동화 동향」 보고서 개선판, 가상 검토자의 검토 의견(26/40, 지적 16건), 달라진 곳 |
+| 별첨 `trend-report.html` | 「AI 에이전트 R&D 자동화 동향」 보고서 개선판(A4 4쪽), 가상 검토자의 검토 의견(26/40, 지적 16건), 달라진 곳 |
+| Word `docs/AI에이전트_RnD자동화_동향보고.docx` | 별첨 보고서의 Word판(A4 4쪽). 요약 상자, 헤드 메시지, 그림 1개, 표 1개 |
 | 참고 자료 | 책, 연구, 지침 41종 |
 
 ## 고쳐 쓰기
@@ -29,6 +30,7 @@ src/app.js            어휘 검색
 src/refs.json         참고 자료. 본문에서는 [[열쇠]]로 가리킨다
 data/vocab.json       어휘 2,220개
 python3 build.py      index.html, trend-guide.html, trend-report.html 다시 만들기
+make_report_a4.py     보고서 A4 4쪽판을 HTML 조각과 Word 파일로 만든다. 내용은 이 파일의 PAGES에 있다
 make_trend.py         검토 의견(docs/trend-review.md)을 읽어 부록·별첨 원본(src/standalone)을 만든다
 ```
 
