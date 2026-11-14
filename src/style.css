@@ -411,3 +411,22 @@ vocab-browser { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(-
   .vb-side, .vb-tools, .vb-sentinel, #ref-pop, .bar::after { display: none !important; }
   vocab-browser { display: block; }
 }
+
+/* ── 별첨 보고서: 실제 보고서 한 편을 종이처럼 싣는다 ── */
+.report { background: var(--sheet); border: 1px solid var(--ink-3); box-shadow: 8px 8px 0 var(--line); padding: clamp(1.2rem, 4vw, 3rem); margin: var(--s-4) 0 var(--s-5); max-width: 60rem; font-size: 0.97rem; line-height: 1.7; display: grid; gap: var(--s-4); }
+.report > * { min-width: 0; }
+.report-h { border-bottom: 3px solid var(--ink); padding-bottom: var(--s-2); }
+.report-kind { margin: 0 0 0.4rem; font-size: var(--t-sm); font-weight: 700; color: var(--blue); }
+.report-h h3 { margin: 0; font-family: var(--f-display); font-weight: 800; font-size: clamp(1.35rem, 3.2vw, 1.9rem); line-height: 1.35; letter-spacing: -0.02em; text-wrap: balance; }
+.report-meta { margin: 0.5rem 0 0; font-size: var(--t-sm); color: var(--ink-2); }
+.report h4 { margin: 0 0 var(--s-2); font-size: 1.15rem; font-weight: 700; padding-bottom: 0.35rem; border-bottom: 1px solid var(--ink); }
+.report h5 { margin: var(--s-2) 0 0.4rem; font-size: 0.97rem; font-weight: 700; color: var(--blue); }
+.report h4 + h5, .report-grid h5:first-child { margin-top: 0; }
+.report-sum { background: var(--tint); padding: var(--s-3); }
+.report-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr)); gap: var(--s-2) var(--s-4); }
+.report-term { margin: 0 0 var(--s-2); font-size: var(--t-sm); color: var(--ink-2); border-left: 3px solid var(--line); padding-left: 0.8rem; }
+.report .tbl { margin-top: 0.4rem; }
+.report .gj + .tbl, .report .tbl + .gj { margin-top: var(--s-2); }
+.mk { display: inline-grid; place-items: center; min-width: 1.5em; height: 1.5em; padding: 0 0.3em; border-radius: 99px; background: var(--red); color: var(--sheet); font-family: var(--f-body); font-size: 0.72rem; font-weight: 700; line-height: 1; vertical-align: 0.15em; letter-spacing: 0; }
+.rules.marks > li::before { content: counter(r); display: inline-grid; place-items: center; width: 1.9rem; height: 1.9rem; border-radius: 50%; background: var(--red); color: var(--sheet); font-family: var(--f-body); font-size: 0.95rem; font-weight: 700; margin-top: 0.15rem; }
+@media print { .report { box-shadow: none; break-inside: auto; } }
