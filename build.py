@@ -53,3 +53,20 @@ full = ('<!doctype html>\n<html lang="ko">\n<head>\n<meta charset="utf-8">\n'
 if len(sys.argv) > 1:
     Path(sys.argv[1]).write_text(page, encoding="utf-8")
 print(f"index.html: {len(full.encode('utf-8')) / 1024:.0f} KB, 어휘 {len(vocab)}개, 참고 자료 {len(num)}종")
+
+# 따로 떼어 보는 문서(src/standalone/*.html): 첫 줄의 <!-- title: … --> 가 문서 이름이다.
+def wrap(title, frag):
+    head = read(SRC / "head.html").replace("<title>보고서 작성 바이블</title>", f"<title>{title}</title>")
+    page = head + "<style>\n" + read(SRC / "style.css") + "</style>\n" + frag
+    full = ('<!doctype html>\n<html lang="ko">\n<head>\n<meta charset="utf-8">\n'
+            '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
+            + head + "</head>\n<body>\n" + page[len(head):] + "</body>\n</html>\n")
+    return page, full
+for p in sorted((SRC / "standalone").glob("*.html")):
+    frag = read(p)
+    title = re.match(r"<!-- title: (.+?) -->", frag).group(1)
+    page, full = wrap(title, frag)
+    (ROOT / p.name).write_text(full, encoding="utf-8")
+    if len(sys.argv) > 1:
+        (Path(sys.argv[1]).parent / p.name).write_text(page, encoding="utf-8")
+    print(f"{p.name}: {len(full.encode('utf-8')) / 1024:.0f} KB")
