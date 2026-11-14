@@ -1,269 +1,26 @@
 #!/usr/bin/env python3
-"""동향 보고서 부록(쓰는 법)과 별첨(보고서 개선판 + 검토 의견)을 src/standalone/ 에 만든다.
+"""부록 문서(src/standalone/trend-guide.html)를 만든다. 동향 보고서 쓰는 법.
 
-  python3 make_trend.py 검토의견.md [부록_URL 별첨_URL 바이블_URL]
+  python3 make_trend.py [부록_URL 별첨_URL 바이블_URL]
 
-검토 의견서(마크다운)의 평가표, 지적 사항, 분석 틀, 예상 질문을 읽어 HTML로 옮긴다.
+바탕 글(src/trend-guide-base.html)에 검토에서 얻은 보강 내용을 끼워 넣는다.
+별첨 문서는 make_flow.py 가 만든다.
 """
-import re, sys, html
+import html, sys
 from pathlib import Path
 
 ROOT = Path(__file__).parent
 OUT = ROOT / "src" / "standalone"
 OUT.mkdir(parents=True, exist_ok=True)
-review = Path(sys.argv[1]).read_text(encoding="utf-8")
-URL_GUIDE, URL_REPORT, URL_BIBLE = (sys.argv[2:5] + ["trend-guide.html", "trend-report.html", "index.html"])[:3] if len(sys.argv) >= 5 else ("trend-guide.html", "trend-report.html", "index.html")
+URL_GUIDE, URL_REPORT, URL_BIBLE = sys.argv[1:4] if len(sys.argv) >= 4 else ("trend-guide.html", "trend-report.html", "index.html")
 
 esc = html.escape
-def inline(t):
-    t = esc(t.strip())
-    t = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", t)
-    return re.sub(r"`(.+?)`", r"\1", t)
-
-def md_table(block, cls="tbl wide"):
-    rows = [r for r in block.strip().splitlines() if r.startswith("|")]
-    cells = lambda r: [c.strip() for c in r.strip().strip("|").split("|")]
-    head, body = cells(rows[0]), [cells(r) for r in rows[2:]]
-    h = "".join(f"<th>{inline(c)}</th>" for c in head)
-    b = "".join("<tr>" + "".join(f"<td>{inline(c)}</td>" for c in r) + "</tr>" for r in body)
-    return f'<div class="{cls}"><table><thead><tr>{h}</tr></thead><tbody>{b}</tbody></table></div>'
-
-def section(start, end=None):
-    i = review.index(start)
-    j = review.index(end, i + 1) if end else len(review)
-    return review[i:j]
-
-def bullets(lines):
-    """'  - 항목' 줄들을 개조식 목록으로."""
-    return '<ul class="gj">' + "".join(f"<li>{inline(l.strip()[2:])}</li>" for l in lines if l.strip().startswith("- ")) + "</ul>"
-
-# ── 검토 의견서에서 뽑기 ──
-overall = section("## 1. 총평", "---").split("\n", 2)[2].strip()
-score_tbl = md_table(section("## 2. 평가표", "---"), "tbl")
-qa_tbl = md_table(section("## 6. 경영진 예상 질문", "---"), "tbl wide")
-frameA = md_table(section("### 틀 A.", "### 틀 B."))
-frameB = md_table(section("### 틀 B.", "### 틀 C."))
-frameC = md_table(section("### 틀 C.", "## 5."))
-
-issues = []
-for m in re.finditer(r"\*\*([①-⑳]) (.+?)\*\*\n(.*?)(?=\n\*\*[①-⑳] |\n### |\n---)", section("## 3. 지적 사항", "## 4."), re.S):
-    num, title, body = m.groups()
-    f = {}
-    key = None
-    for line in body.splitlines():
-        mm = re.match(r"- (중요도|위치|문제|왜 문제인가|고치기 전|고친 뒤):\s*(.*)", line)
-        if mm:
-            key = mm.group(1); f[key] = [mm.group(2)] if mm.group(2) else []
-        elif key and line.strip():
-            f[key].append(line)
-    issues.append((num, title, f))
-assert len(issues) == 16, len(issues)
-
-def issue_html(num, title, f):
-    lv = f["중요도"][0]
-    tag = {"상": "neg", "중": "pos", "하": ""}[lv]
-    after = f["고친 뒤"]
-    after_html = bullets(after) if any(l.strip().startswith("- ") for l in after) else f'<ul class="gj"><li>{inline(" ".join(after))}</li></ul>'
-    before = " ".join(f["고치기 전"]).strip().strip('"')
-    return (f'<div class="issue"><div class="issue-h"><span class="mk">{num}</span><h4>{inline(title)}</h4>'
-            f'<span class="tag {tag}">중요도 {lv}</span><span class="issue-loc">{inline(f["위치"][0])}</span></div>'
-            f'<p><b>문제.</b> {inline(" ".join(f["문제"]))}</p><p><b>왜 문제인가.</b> {inline(" ".join(f["왜 문제인가"]))}</p>'
-            f'<div class="fix"><div class="b">{inline(before)}</div><div class="g">{after_html}</div></div></div>')
-issues_html = "".join(issue_html(*x) for x in issues)
 
 def bar(name, links):
     nav = "".join(f'<a href="{h}">{t}</a>' for h, t in links)
     return (f'<header class="bar"><div class="bar-in"><a class="bar-name" href="#top">{name}</a>'
             f'<nav class="bar-nav" aria-label="이동">{nav}</nav></div></header>\n<main class="wrap">\n')
 
-PERSONA = ('<div class="box warn"><h4>검토자에 관하여</h4><p>이 검토는 <b>삼성글로벌리서치 수석연구원 역할을 맡긴 가상의 검토자</b>(AI)가 별도 세션에서 수행했다. '
-           '실제 기관이나 소속 연구원의 의견이 아니다. 대기업 사장단 보고를 다뤄 온 싱크탱크 연구원의 눈으로 초안을 읽게 하려는 장치다.</p></div>')
-
-# ═════════════ 별첨: 보고서 개선판 ═════════════
-NUMS = [  # (수치, 출처, 등급, 대조)
- ("과제 길이 약 12시간(50% 기준), 약 1.5시간(80% 기준)", "METR 시간 지평 측정, 2026년 5월 보고서", "독립 평가", "□"),
- ("OpenAI ‘며칠짜리 연구 과제 완수’ 단계", "OpenAI 게시글, 2026. 9. 6.", "회사 발표", "□"),
- ("사람 근무일 1일당 에이전트 근무일 3.1일", "eWeek 보도(OpenAI 자료 인용), 2026년 8월 기준", "보도", "□"),
- ("개발자 90%가 주 1회 이상 사용", "JetBrains 조사, 2026년 5~7월", "설문", "□"),
- ("Google 신규 코드 75%(2024년 10월 약 25%)", "Cloud Next 발표, 2026. 4. 22.", "회사 발표", "□"),
- ("Anthropic 병합 코드 80% 이상", "Anthropic Institute 글, 2026년 5월 기준", "회사 발표", "확인"),
- ("Microsoft 코드의 20~30%", "CEO 발언, 2025년 4월", "회사 발표", "□"),
- ("확대 적용 10% 이하, AI 사용 기업 88%", "McKinsey State of AI 2025, 2025. 11.", "설문", "□"),
- ("에이전트 프로젝트 40% 이상 취소 전망", "Gartner 보도자료, 2025. 6. 25.", "전망", "□"),
- ("HBM4 리드타임 약 50% 단축", "삼성전자 GTC 2026 발표, 2026년 3월", "회사 발표", "□"),
- ("삼성 AI 포럼 ‘에이전틱 시프트’, 2026. 9. 30.", "삼성전자 뉴스룸", "회사 발표", "□"),
- ("SK하이닉스 AI 기반 R&D 전환 선언, 2026. 2. 11.", "세미콘 코리아 기조연설 보도", "보도", "□"),
- ("LG에너지솔루션 셀 설계 수 주 → 하루", "회사 발표 보도, 2026년 8월", "회사 발표", "□"),
- ("LG 자율 실험실 2026년 말 가동 계획, 후보 42만여 개", "LG 보도자료, 2026년", "회사 발표", "□"),
- ("Lilly·NVIDIA 최대 10억 달러", "NVIDIA 보도자료, 2026. 1. 12.", "회사 발표", "□"),
- ("Microsoft Discovery 정식 출시", "Azure 공지, 2026. 6. 4.", "회사 발표", "□"),
- ("임상 보고서 초안 10주 이상 → 10분", "Novo Nordisk 고객 사례(공급사 페이지), 2026년", "회사·공급사 발표", "□"),
- ("RTL 검증 5주 → 약 하루", "Cadence·NVIDIA 발표, 2026년", "공급사 발표", "□"),
- ("AI Scientist 3편 중 1편 워크숍 심사 통과", "Nature 게재 논문, 2026. 3. 26.", "학술지 게재", "□"),
- ("AI co-scientist 제안의 시험관 실험 확인", "Nature 게재 논문, 2026. 5. 19.", "학술지 게재", "□"),
- ("수학 문제 67개 중 23개 개선", "AlphaEvolve 공동 연구 논문(arXiv 2511.02864)", "논문", "□"),
- ("정확도 85.5% / 82.1% / 57.9%", "Kosmos 논문(arXiv 2511.02824), 2025. 11.", "개발사 측 평가", "□"),
- ("연구 결과물 6점 만점에 2점·1점(대상 2편)", "Kirgis 외 논문(arXiv 2607.27191), 2026. 7.", "독립 평가", "□"),
- ("AI는 조직의 강점과 약점을 증폭(약 5,000명)", "DORA 2025 보고서", "설문", "□"),
- ("코드 산출 증가, 전달 정체(풀 리퀘스트 810만 건)", "LinearB 분석", "공급사 발표", "□"),
- ("숙련 개발자 작업 속도 약 19% 저하", "METR 실험, 2025년 2~6월 자료", "독립 평가", "□"),
- ("METR ‘지금은 더 빨라졌을 가능성, 크기 증거는 매우 약함’", "METR 공지, 2026년 2~3월", "독립 평가 기관 공지", "□"),
- ("수학 미해결 문제 발표 삭제, 2025. 10.", "언론 보도", "보도", "□"),
- ("신소재 44% 논문 철회 요청, 2025. 5.", "MIT 공지 보도", "보도", "□"),
- ("운영 데이터베이스 9초 만에 삭제, 2026. 4.", "피해 기업 창업자 공개", "당사자 설명", "□"),
- ("격리 환경 이탈, 2026. 7.", "보안 매체 보도, 양사 인정", "보도", "□"),
- ("Uber 연간 예산 4월 소진, 1인당 월 1,500달러 한도", "언론 보도(CTO 발언 인용)", "보도", "□"),
- ("신규 졸업자 채용 2019년 대비 약 65% 낮은 수준", "SignalFire 보고서 인용 보도, 2026년", "보도", "□"),
- ("Siemens 노사협의회의 공동결정 사안 제기", "Counterpoint 분석, 2026년", "보도", "□"),
- ("K-문샷 2030년 연구 생산성 2배", "국가인공지능전략위원회 의결, 2026. 2. 25.", "정부 자료", "□"),
- ("2027년 AI 예산 5.1조 → 9.4조 원", "과기정통부 예산안(국회 심의 중)", "정부 자료", "□"),
- ("인공지능기본법 2026. 1. 22. 시행, 제재 유예", "법령, 정부 발표 보도", "법령·보도", "□"),
- ("EU 고위험 의무 2027. 12. 2.로 연기", "EU 규정 2026/1744", "법령", "□"),
- ("OpenAI 2028년 3월 목표, 2028년 말 확률 60% 이상 견해", "회사 발표, 보도", "회사 전망·보도", "□"),
- ("약 3배 장기 소요 전망, 진행 속도 70~90% 자체 평가", "FutureSearch, AI Futures", "전망", "□"),
-]
-N, DONE = len(NUMS), sum(1 for x in NUMS if x[3] == "확인")
-nums_html = "".join(f"<tr><td>{esc(a)}</td><td>{esc(b)}</td><td>{esc(c)}</td><td>{esc(d)}</td></tr>" for a, b, c, d in NUMS)
-
-report = (ROOT / "src" / "trend-report-a4.html").read_text(encoding="utf-8") + f'''
-<article class="report" aria-label="별지">
-<header class="report-h"><p class="report-kind">별지 · 4쪽 본문에 딸린 자료</p><h3>수치 대조표와 예상 질문</h3></header>
-<section>
-<h4>별지 1. 수치별 출처와 원문 대조 ({N}건 중 {DONE}건 대조 완료)</h4>
-<div class="tbl"><table>
-<thead><tr><th>수치·사실</th><th>출처</th><th>등급</th><th>대조</th></tr></thead>
-<tbody>{nums_html}</tbody>
-<caption>‘확인’은 원문 페이지를 직접 열어 본 것. □는 검색 요약으로만 확인한 것. 대조하지 못한 수치는 보고 전에 삭제하거나 본문 같은 줄에 ‘(미대조)’ 표기.</caption></table></div>
-</section>
-<section>
-<h4>별지 2. 예상 질문과 답</h4>
-{qa_tbl}
-</section>
-</article>'''
-
-CHANGES = [
- ("요지 첫 줄", "한 회사의 자체 발표(‘며칠짜리 과제’)가 대표 문장", "독립 평가 수치(12시간, 1.5시간)를 앞세우고 자체 발표는 등급을 붙여 뒤로", "①"),
- ("제목과 범위", "‘이동’의 주체와 영역이 한정되지 않음", "‘코드·설계부터 이행 시작’으로 한정, 기업 전반은 실험 단계라는 사실 추가", "②"),
- ("당사 위치", "‘같은 방향’이라는 인상", "4단계 모형 위에 당사·선도 기업·국내 기업을 함께 표시", "③ 틀 A"),
- ("맡길 수 있는 범위", "코드 → 설계 → 실험의 나열", "연구 활동 여덟 단계별 성숙도와 적용 판단", "틀 B"),
- ("준비 사항", "다섯 가지를 같은 무게로 나열", "순위, 이유, 담당·시기를 붙인 정비 순서", "④"),
- ("끝맺음", "재보고 시점만 제시", "다음 보고에서 무엇을 판단할지 예고", "⑤"),
- ("수치 대조", "16건만 표에 등재, 본문에 표 밖 수치 다수", f"본문 수치 {N}건 전부 등재, 머리에 ‘대조 전 초안’ 표시", "⑥"),
- ("지켜볼 지표", "측정할 수 없는 문턱, 외부 지표만", "관측 가능한 기준으로 교체, 내부 지표 2개와 ‘그때 할 일’ 추가", "⑦"),
- ("전망", "한 회사의 목표와 현재 평가를 맞세움", "전망끼리 맞세우고 시나리오 세 가지와 조기 신호로 정리", "⑧ 틀 C"),
- ("반대 근거", "논문 2편 평가를 ‘낙제 수준’으로 일반화", "점수와 표본(2편), 평가 조건을 그대로 표기", "⑨"),
- ("출처 귀속", "DORA에 다른 자료의 결론, 삼성 두 행사를 한 줄로", "자료별로 결론을 나누고 날짜를 분리", "⑩ ⑪"),
- ("규제", "일정만 나열", "당사 부담의 유무에 대한 판단 추가", "⑫"),
- ("AI 작성 비율", "75%, 80%를 나란히", "정의가 달라 비교할 수 없고 속도 향상과 다르다는 단서", "⑬"),
- ("인력·조직", "본문에 내용 부재", "한 절 신설: 역할 이동, 채용, 노사 협의", "⑭"),
- ("감속 실험", "2025년 수치만 인용", "측정 기관의 현재 견해를 함께 표기", "⑮"),
- ("평가어", "‘투자 집중’, 주체 없는 사고 서술", "약정·계획 단계라는 사실로 교체, 주체와 등급 표기", "⑯"),
- ("형식과 분량", "표 열 개가 이어지는 긴 문서", "A4 4쪽. 요약 상자, 헤드 메시지, 그림 하나와 표 하나. 출처는 쪽 아래 주석, 대조표는 별지", "작성자 요청"),
-]
-changes_html = "".join(f"<tr><td>{a}</td><td class=\"x\">{b}</td><td>{c}</td><td>{d}</td></tr>" for a, b, c, d in CHANGES)
-
-report_page = f'''<!-- title: AI 에이전트 R&D 동향 보고 -->
-{bar("별첨: AI 에이전트 R&D 자동화 동향", [("#report", "보고서 개선판"), ("#review", "검토 의견"), ("#changes", "달라진 것"), ("#lessons", "잘 쓰는 법"), (URL_GUIDE, "부록: 쓰는 법"), (URL_BIBLE, "보고서 작성 바이블")])}
-<section class="sheet" id="top">
-<div class="folio"><span>보고서 작성 바이블 · 별첨</span><span>동향 보고서 실례</span></div>
-<header class="open">
-  <div class="num" style="font-size:clamp(3.2rem,8vw,6rem);line-height:1">별첨</div>
-  <div>
-    <h2>AI 에이전트 R&D 자동화 동향 보고서: 초안, 검토, 개선판</h2>
-    <p class="stand">다음 주 경영회의에 올리는 참고 보고라는 상황을 두고 쓴 동향 보고서다. 초안을 싱크탱크 연구원의 눈으로 검토받고, 지적 16건과 분석 틀 3종을 반영해 고쳤다. 고친 보고서, 검토 의견, 달라진 곳, 여기서 얻은 원칙을 차례로 싣는다.</p>
-  </div>
-  <div class="gist">
-    <h3>한눈에</h3>
-    <ol>
-      <li>초안 평가는 40점 만점에 26점. 출처 표기와 균형은 강점, 분석 틀과 의사결정 연결은 약점.</li>
-      <li>개선판은 A4 4쪽. 4단계 모형을 그림 하나로, 정비 순서를 표 하나로 싣고 나머지는 개조식으로 정리.</li>
-      <li>본문 수치 {N}건 가운데 원문을 직접 확인한 것은 {DONE}건. 보고 전 대조 필수.</li>
-      <li>대괄호 자리는 당사 실제 수치와 담당 부서로 교체.</li>
-    </ol>
-  </div>
-</header>
-<div class="prose">
-<div class="box warn"><h4>보고 전에 반드시 할 일</h4><ul>
-<li>수치와 날짜는 2026년 11월 14일 웹 검색 결과의 요약을 근거로 했다. 붙임 1의 □ 표시 수치를 원문에서 확인하고, 확인되지 않으면 삭제하거나 ‘(미대조)’로 표시한다.</li>
-<li>대괄호 자리(자동화 과제 수, 담당 부서와 시기, 내부 지표의 현재 수준, 업종 경쟁사)를 채운다.</li>
-<li>단계 모형과 성숙도 표의 위치·등급은 공개 발표에 근거한 추정이다. 당사 현황을 넣은 뒤 다시 판단한다.</li>
-</ul></div>
-</div>
-</section>
-
-<section class="sheet" id="report">
-<div class="folio"><span>별첨</span><span>보고서 개선판 (A4 4쪽)</span></div>
-<div class="prose"><h3>보고서 개선판: A4 4쪽</h3><p>싱크탱크 발간물의 짜임을 따랐다. 첫 쪽 머리에 요약 상자를 두고, 번호 붙은 절 아래 굵은 헤드 메시지와 □, - 두 단계의 개조식으로 썼다. 그림은 하나, 표도 하나다. 출처는 쪽 아래 주석으로 내렸고, 수치 대조표와 예상 질문은 별지로 뺐다. 같은 내용의 Word 파일은 저장소의 <code>docs/AI에이전트_RnD자동화_동향보고.docx</code>다.</p></div>
-{report}
-</section>
-
-<section class="sheet" id="review">
-<div class="folio"><span>별첨</span><span>검토 의견</span></div>
-<header class="open">
-  <div class="num">26</div>
-  <div>
-    <h2>초안 검토: 40점 만점에 26점</h2>
-    <p class="stand">형식과 출처 규율은 상위권, 분석 틀과 의사결정 연결은 보완이 필요하다는 평가다. 그대로는 상정할 수 없고 보완하면 상정할 수 있다는 결론이었다.</p>
-  </div>
-</header>
-<div class="prose">
-{PERSONA}
-<h3>총평</h3>
-<p>{inline(overall)}</p>
-<h3>평가표</h3>
-{score_tbl}
-<h3>검토자가 제안한 분석 틀 세 가지</h3>
-<p>검토자는 초안에 없던 틀 세 가지를 내용까지 채워 제안했다. 개선판은 첫째 틀을 그림 1로 싣고, 둘째와 셋째 틀은 표 대신 항목으로 풀어 3절과 4절에 넣었다. 원래의 표는 아래와 같다.</p>
-<h4>틀 A. R&D 자동화 4단계와 위치</h4>
-{frameA}
-<h4>틀 B. 연구 활동 단계별 에이전트 성숙도</h4>
-{frameB}
-<h4>틀 C. 2027~2028년 시나리오와 조기 신호</h4>
-{frameC}
-<h3>지적 사항 16건</h3>
-<p>중요도가 높은 것부터 실었다. ‘고치기 전’은 초안의 문구이고 ‘고친 뒤’는 검토자가 다시 쓴 문구다. 개선판에는 이 문구를 거의 그대로 반영했다.</p>
-</div>
-<div class="issues">{issues_html}</div>
-</section>
-
-<section class="sheet" id="changes">
-<div class="folio"><span>별첨</span><span>달라진 것</span></div>
-<div class="prose">
-<h3>초안에서 개선판으로: 달라진 열일곱 곳</h3>
-<div class="tbl wide"><table>
-<thead><tr><th>대목</th><th>초안</th><th>개선판</th><th>지적 번호</th></tr></thead>
-<tbody>{changes_html}</tbody></table></div>
-</div>
-</section>
-
-<section class="sheet" id="lessons">
-<div class="folio"><span>별첨</span><span>이 보고서로 보는 잘 쓰는 법</span></div>
-<div class="prose">
-<h3>초안이 지킨 것 다섯 가지</h3>
-<ol class="rules">
-<li><div><b>보고의 성격을 첫 줄에 밝혔다.</b><p>참고 보고이고 결정 요청이 없다는 사실이 맨 위에 있다. 경영진은 결정할 것이 있는지부터 알고 읽는다.</p></div></li>
-<li><div><b>제목과 소제목에 주장을 담았다.</b><p>‘동향’이라는 주제어를 쓰지 않고 무엇이 달라지는지를 썼다. 소제목만 이어 읽어도 줄거리가 통한다.</p></div></li>
-<li><div><b>수치마다 누가 잰 것인지 적었다.</b><p>검토자가 가장 큰 강점으로 꼽은 대목이다. 독립 평가, 회사 발표, 보도, 전망을 수치와 같은 줄에 두었다.</p></div></li>
-<li><div><b>불리한 근거에 한 절을 내주었다.</b><p>한계, 과장 사례, 사고 사례를 따로 실었다. 좋은 소식만 모은 보고서는 첫 질문에서 무너진다.</p></div></li>
-<li><div><b>개조식 끝맺음이 일관된다.</b><p>모든 항목이 명사로 끝나고 ‘~함, ~임’이 한 곳도 없다. 주체를 항목 첫머리에 두고 쉼표로 끊었다.</p></div></li>
-</ol>
-
-<h3>검토로 배운 것 일곱 가지</h3>
-<ol class="rules">
-<li><div><b>요약의 첫 줄은 가장 단단한 근거로 쓴다.</b><p>초안은 본문에서 출처를 엄격히 가렸지만 요약의 첫 줄에는 한 회사의 자체 발표를 썼다. 경영진은 첫 줄만 기억한다. 본문의 규율이 요약에서 무너지지 않게 한다.</p></div></li>
-<li><div><b>‘같은 방향’은 판단이 아니다. 틀 위에 위치를 찍는다.</b><p>단계 모형처럼 한눈에 보이는 틀을 세우고 우리와 선도 기업, 경쟁사를 같은 축에 올려야 거리와 순서를 말할 수 있다. 사례를 묶는 것과 구조를 보여 주는 것은 다른 일이다.</p></div></li>
-<li><div><b>목록에는 순서를 붙인다.</b><p>준비할 다섯 가지를 같은 무게로 늘어놓으면 실행 부서가 받아 갈 수 없다. 무엇을 먼저 하는지, 왜 그 순서인지, 누가 언제 하는지를 적는다.</p></div></li>
-<li><div><b>참고 보고일수록 다음 결정을 예고한다.</b><p>결정 요청이 없더라도 다음 보고에서 무엇을 판단하게 되는지, 그 전에 누가 무엇을 준비하는지를 끝에 적는다. ‘재보고 예정’만으로는 ‘예의 주시’와 다르지 않다.</p></div></li>
-<li><div><b>어디까지 넓혀 말할 수 있는지를 지킨다.</b><p>논문 두 편의 평가를 ‘낙제 수준’이라고 쓰고, 소프트웨어 개발의 관찰을 R&D 전반의 변화로 쓴 것이 초안의 가장 아픈 약점이었다. 표본, 분야, 조건을 그대로 적는다. 반대 근거에도 같은 엄격함을 적용한다.</p></div></li>
-<li><div><b>지표는 관측할 수 있어야 한다.</b><p>초안의 첫 지표는 측정 기관이 신뢰하기 어렵다고 밝힌 범위에 문턱을 두었다. 누가 얼마나 자주 발표하는지, 문턱의 근거는 무엇인지, 문턱에 닿으면 우리가 무엇을 하는지를 함께 적고, 우리 안에서 잴 수 있는 지표를 짝지운다.</p></div></li>
-<li><div><b>경영진이 물을 것은 본문에 있어야 한다.</b><p>인력 영향과 비용은 반드시 나오는 질문인데 초안 본문에는 없었다. 구두로 답하면 출처가 붙지 않는다. 답할 수 없는 질문은 무엇을 확인해야 답할 수 있는지를 적어 둔다.</p></div></li>
-</ol>
-<div class="box tip"><h4>검토를 받는 방법</h4><p>이번 검토는 초안을 쓴 세션과 다른 세션에 맡겼다. 초안을 쓴 사람은 자기 글의 빈틈을 보기 어렵다. 검토자에게는 역할(사장단 보고를 다뤄 온 연구원), 판단 기준, 산출물의 형식(평가표, 지적 사항의 전후 문구, 추가할 틀)을 정해 주었다. 사람에게 검토를 부탁할 때에도 같은 세 가지를 정해 주면 쓸 수 있는 의견이 돌아온다.</p></div>
-</div>
-</section>
-</main>
-'''
-(OUT / "trend-report.html").write_text(report_page, encoding="utf-8")
 
 # ═════════════ 부록: 동향 보고서 쓰는 법 (검토 의견 반영) ═════════════
 src = (ROOT / "src" / "trend-guide-base.html").read_text(encoding="utf-8")
@@ -356,7 +113,8 @@ frames = '''
 <li><span class="lead-in">기준.</span> 무엇을 볼지. 첫 줄의 근거, 틀의 유무, 출처 귀속, 일반화의 범위, 의사결정과의 연결.</li>
 <li><span class="lead-in">산출물.</span> 무엇을 받을지. 항목별 점수, 지적마다 고치기 전과 고친 뒤의 문구, 빠진 틀, 예상 질문.</li>
 </ul>
-<p>별첨 보고서는 이 방식으로 검토받아 40점 만점에 26점을 받았고, 지적 16건을 반영해 고쳤다. 초안, 검토 의견, 개선판을 별첨에 함께 실었다.</p>
+<p>검토는 두 번으로 나눈다. 첫 번째는 줄거리와 내용의 정확성을, 두 번째는 읽히는 정도와 문장을 본다. 줄거리가 바뀔 글의 문장을 먼저 다듬으면 헛일이 된다. 검토자끼리는 서로의 의견을 보지 않게 한다. 따로 본 두 사람이 같은 곳을 짚으면 그곳은 반드시 고친다. 받은 지적은 빠짐없이 적고 반영 여부와 이유를 남긴다.</p>
+<p>별첨 보고서는 이 방식으로 만들었다. 초안을 쓰고, 검토자 네 명에게 두 차례 검토받아 지적 48건을 받고, 개선판과 완성본을 썼다. 단계마다 받은 지적과 조치를 별첨에 모두 실었다.</p>
 '''
 marker = '<h3>자주 틀리는 일곱 가지</h3>'
 assert marker in src
@@ -369,10 +127,10 @@ guide_page = f'''<!-- title: 동향 보고서 쓰는 법 -->
 </div>
 <div class="prose">
 <h3>별첨 안내</h3>
-<p>이 부록의 원칙대로 쓰고 검토받아 고친 실제 보고서는 따로 실었다. <a href="{URL_REPORT}">별첨: AI 에이전트 R&D 자동화 동향 보고서(초안 검토와 개선판)</a>에서 본다.</p>
+<p>이 부록의 원칙대로 쓰고 검토받아 고친 실제 보고서는 따로 실었다. <a href="{URL_REPORT}">별첨: AI 에이전트 R&D 자동화 동향 보고서(초안에서 완성본까지)</a>에서 본다.</p>
 </div>
 </section>
 </main>
 '''
 (OUT / "trend-guide.html").write_text(guide_page, encoding="utf-8")
-print("수치", N, "건, 대조", DONE, "건, 지적", len(issues), "건")
+print("부록 생성")

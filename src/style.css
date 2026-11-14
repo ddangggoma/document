@@ -207,7 +207,7 @@ sup.ref a { text-decoration: none; font-weight: 700; padding: 0 0.1em; }
 .tbl td:first-child { font-weight: 700; }
 .tbl .x { color: var(--red); } .tbl .o { color: var(--blue); font-weight: 700; }
 .tbl caption { caption-side: bottom; text-align: left; font-size: var(--t-xs); color: var(--ink-3); padding-top: 0.5rem; }
-.num-col { font-variant-numeric: tabular-nums; text-align: right !important; }
+.num-col { font-variant-numeric: tabular-nums; text-align: right !important; white-space: nowrap; }
 
 /* 꼬리표 */
 .tag { display: inline-block; font-size: var(--t-xs); line-height: 1.5; padding: 0.05rem 0.5rem; border: 1px solid var(--line); border-radius: 99px; color: var(--ink-2); white-space: nowrap; vertical-align: 0.08em; }
